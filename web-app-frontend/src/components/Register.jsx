@@ -11,8 +11,8 @@ const Register = () => {
     e.preventDefault();
     setMessage('');
     try {
-        await authService.register(username, email, password);
-        setMessage('Register succesful!');
+        const response =await authService.register(username, email, password);
+        setMessage(response.message);
     } catch (error) {
       setMessage('Registration failed!');
     }

@@ -11,8 +11,8 @@ const Login = () => {
     setMessage('');
 
     try {
-      await authService.login(email, password);
-      setMessage('Login successful!');
+      const response=await authService.login(email, password);
+      setMessage(response.message);
     } catch (error) {
       setMessage('Error logging in');
     }
