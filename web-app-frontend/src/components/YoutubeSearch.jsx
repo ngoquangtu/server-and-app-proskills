@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import youtubeService from '../services/youtubeService';
+import './YoutubeSearch.css'; // Import CSS file for styling
 
 const YoutubeSearch = () => {
     const [query, setQuery] = useState('');
@@ -8,19 +9,15 @@ const YoutubeSearch = () => {
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        setError(''); // Clear any previous errors
-        setResults([]); // Clear previous results
+        setError(''); // Clear any previous errors  
 
         try {
-            const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-                params: {
-                    part: 'snippet',
-                    q: query,
-                    key: process.env.YOUTUBE_API_KEY,
-                },
-            });
-
-            setResults(response.data.items);
+            const data = await youtubeService.searchYouTube(query);
+            if (data.length > 0) {
+                setResults(data);
+            } else {
+                setError('No results found');
+            }
         } catch (err) {
             console.error('Error searching YouTube:', err);
             setError('Error searching YouTube');
@@ -28,27 +25,38 @@ const YoutubeSearch = () => {
     };
 
     return (
-        <div>
-            <h2>YouTube Search</h2>
-            <form onSubmit={handleSearch}>
+        <div className="youtube-search-container">
+            <h2 className="youtube-search-title">YouTube Search</h2>
+            <form onSubmit={handleSearch} className="youtube-search-form">
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search for videos"
+                    className="youtube-search-input"
                 />
-                <button type="submit">Search</button>
+                <button type="submit" className="youtube-search-button">Search</button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <ul>
+            {error && <p className="youtube-error-message">{error}</p>}
+            <div className="youtube-results-container">
                 {results.map((item) => (
-                    <li key={item.id.videoId}>
-                        <h3>{item.snippet.title}</h3>
-                        <p>{item.snippet.description}</p>
-                        <img src={item.snippet.thumbnails.default.url} alt={item.snippet.title} />
-                    </li>
+                    <div key={item.id.videoId} className="youtube-video-item">
+                        <h3 className="youtube-video-title">{item.snippet.title}</h3>
+                        <div className="youtube-video-wrapper">
+                            <iframe
+                                title={item.snippet.title}
+                                width="560"
+                                height="315"
+                                src={`https://www.youtube.com/embed/${item.id.videoId}`}
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                                className="youtube-video-iframe"
+                            ></iframe>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

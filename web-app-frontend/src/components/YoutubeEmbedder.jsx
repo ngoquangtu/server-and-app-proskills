@@ -25,7 +25,7 @@ const YoutubeEmbedder = () => {
             </form>
             {embedCode && (
                 <div>
-                    <h3>Embed Code:</h3>
+                    <h3>Video</h3>
                     <div dangerouslySetInnerHTML={{ __html: embedCode }} />
                 </div>
             )}

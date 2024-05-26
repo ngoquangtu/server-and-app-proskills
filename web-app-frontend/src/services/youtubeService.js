@@ -1,8 +1,6 @@
 import axios from 'axios';
 import Youtube  from '../models/youtubeModel';
-
-
-const API_KEY = process.env.YOUTUBE_API_KEY;
+const API_KEY = 'AIzaSyCmKDK1fsiRPOwCjxRwZxU4OduBFEQBEPw';
 
 const searchYouTube = async (query) => {
     const url = 'https://www.googleapis.com/youtube/v3/search';
@@ -14,7 +12,7 @@ const searchYouTube = async (query) => {
                 q: query,
                 type: 'video',
                 key: API_KEY,
-                maxResults: 5,
+                maxResults: 20,
             },
         });
         return response.data.items;
@@ -26,6 +24,7 @@ const searchYouTube = async (query) => {
 const getEmbedCode= (url)=>
 {
     const videoId = Youtube.extractVideoId(url);
+    
     if (videoId) {
         return Youtube.generateEmbededCode(videoId);
     } else {

@@ -13,7 +13,6 @@ exports.createCourse = async (req, res) => {
         res.status(500).json({ message: 'Failed to create course' });
     }
 };
-
 exports.deleteComment = async (req, res) => {
     const { commentId } = req.body;
 

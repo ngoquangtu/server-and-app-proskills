@@ -14,15 +14,15 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 
-const users = require('./routes/api-user.js');
-const courses=require('./routes/api-course.js')
 const authentication = require('./routes/api-auth.js');
-
-
-app.use('/users',users);
-app.use('/courses',courses);
+const comment=require('./routes/api-comment');
+const courses = require('./routes/api-course');
+const users=require('./routes/api-user.js')
+app.use('/api/courses',courses);
 app.use('/api/auth', authentication);
-
+app.use('/api/comments',comment);
+app.use('/api/courses', courses);
+app.use('/api/users',users);
 app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });

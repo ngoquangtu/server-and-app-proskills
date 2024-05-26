@@ -4,8 +4,8 @@ const Youtube=
     {
         try
         {
-            const regExp=/^.*(youtu\.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|\&v=|youtu\.be\/|\/v\/|\/embed\/|watch\?v=|\/\?v=|\/v\/)([^#\&\?]*).*/;
-            const match=url.match(regExp);
+            const regExp = /^.*(youtu\.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|&v=|youtu\.be\/|\/v\/|\/embed\/|watch\?v=|\/?v=|\/v\/)([^#&?]*).*/;
+            const match=url.match(regExp);            
             return (match && match[2].length===11)? match[2]:null;   
         }
         catch(err)

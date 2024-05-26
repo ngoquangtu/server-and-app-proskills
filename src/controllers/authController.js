@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
             return res.json({ message: 'Email already exists, try again!!!' });
         }
 
-        await  User.create({ username, email, password });
+        await  User.createInfo({ username, email, password });
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
         console.error('Error during registration:', err);
