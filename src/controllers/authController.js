@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto=require('crypto');
 require('dotenv').config();
 
 exports.register = async (req, res) => {
@@ -36,10 +37,9 @@ exports.login = async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user.id, username: user.username,role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
-        res.cookie('token', token, {  maxAge: 3600000 });
+        res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
         res.status(200).json({ message: 'Authentication successfully' });
     } catch (err) {
-        console.error('Error during login:', err);
         res.status(500).json({ message: 'Error during authentication' });
     }
 };
@@ -47,4 +47,26 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
     res.clearCookie('token');
     res.status(200).json({ message: 'Logged out successfully' });
+};
+exports.sendEmail=async (req,res)=>
+{
+    const {email}=req.body;
+
+    try
+    {
+        const user=await User.findEmail(email);
+        if(!user)
+        {
+            return res.status(404).json({ message: 'User not found' });
+
+        }
+        const token = crypto.randomBytes(20).toString('hex');
+        await User.sendEmail(email,token);
+
+        res.json({ message: 'Reset email sent successfully' });
+    }
+    catch(err)
+    {
+        throw err;
+    }
 };

@@ -3,8 +3,8 @@ const Comment=require('../models/commentModel');
 exports.delete=async(req,res)=>
 {
     try {
-        const { id } = req.params;
-        await Comment.delete(id);
+        const { commentId } = req.params;
+        await Comment.delete(commentId);
         res.status(200).json({ message: 'Comment deleted successfully' });
     } catch (err) {
         res.status(500).json({ message: 'Error deleting comment' });
@@ -31,9 +31,9 @@ exports.getAllComment=async(req,res)=>
 {
     try
     {
-        courseId=req.params.courseId;
-        const comment=await Comment.getAllComment;
-        res.status(201).json(comment);
+        const {courseId}=req.params;
+        const comment=Comment.getAllComment(courseId);
+        res.status(200).json(comment);
     }
     catch(err)
     {

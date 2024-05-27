@@ -6,7 +6,7 @@ const Comment=
     {
         try
         {
-            const query='DELETE * from comments where id=?';
+            const query='DELETE  from comments where id=?';
             const rows=await db.query(query,[id]);
             return rows;
         }
@@ -29,13 +29,27 @@ const Comment=
 
         }
     },
-    getAllComment:async(course_id)=>
+    getAllComment:async(id)=>
     {
+        const query='SELECT comments.*, video.title AS video_title FROM comments JOIN video ON comments.video_id = video.id JOIN courses ON video.course_id = courses.id WHERE comments.course_id = ?';
+        try
+        {   
+            const rows=await db.query(query,[id]);
+            // console.log(rows);
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    getAllCommentbyAdmin:async()=>
+    {
+        const query='SELECT * FROM comments';
         try
         {
-            const query='SELECT comments.*, users.username, users.email FROM comments JOIN users ON comments.user_id = users.id WHERE course_id = ?';
-            const rows=await db.query(query,[course_id]);
-            return rows[0];
+            const rows=await db.query(query);
+            return rows;
         }
         catch(err)
         {

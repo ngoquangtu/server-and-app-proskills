@@ -36,11 +36,24 @@ const logout = async () => {
         throw new Error('Logout failed');
     }
 };
+const resetPassword=async (gmail,token)=>
+{
+    try
+    {
+        const response= await axios.post(API_URL+'resetpassword',{gmail,token});
+        return response.data;
+    }
+    catch(err)
+    {
+        throw new Error('Send email failer');
+    }
+}
 
 const authService = {
     register,
     login,
-    logout
+    logout,
+    resetPassword
 };
 
 export default authService;
