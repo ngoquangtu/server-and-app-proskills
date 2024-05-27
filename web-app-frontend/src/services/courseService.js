@@ -12,7 +12,21 @@ const getAllCourses = async () => {
         throw error;
     }
 };
-
-export default {
-    getAllCourses
+const getCourseById= async(courseId)=>
+{
+    try
+    {
+        const response=await axios.get(`${API_URL}${courseId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        throw err;
+    }
+}
+const courseService = {
+    getAllCourses,
+    getCourseById
 };
+
+export default courseService;

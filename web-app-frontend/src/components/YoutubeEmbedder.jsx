@@ -5,9 +5,9 @@ const YoutubeEmbedder = () => {
     const [url, setUrl] = useState('');
     const [embedCode, setEmbedCode] = useState('');
 
-    const handleEmbed = (e) => {
+    const handleEmbed = async (e) => {
         e.preventDefault();
-        const embed = youtubeService.getEmbedCode(url);
+        const embed = await  youtubeService.getEmbededCode(url);
         setEmbedCode(embed);
     };
 

@@ -1,6 +1,7 @@
 
 const Course = require('../models/courseModel');
 const Comment = require('../models/commentModel');
+const User = require('../models/userModel');
 
 exports.createCourse = async (req, res) => {
     const { title, description, content } = req.body;
@@ -36,5 +37,42 @@ exports.getAllComment= async(req,res)=>
         res.status(200).json(comment);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching comment', error: err.message });
+    }
+}
+exports.getAllUsers=async(req,res)=>
+{
+    try {
+        const userInfor = await User.getAllUserInfor();
+        res.status(200).json(userInfor);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching comment', error: err.message });
+    }
+}
+exports.updateCourses=async (req,res)=>
+{
+    const courseId= req.body;
+    const { title, description, content } = req.body;
+    try 
+    {
+        const updateCourse=await Course.update(title,description,content,courseId);
+        res.status(200).json(updateCourse);
+
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error update course',error:err.message});
+    }
+}
+exports.deleteCourse=async(req,res)=>
+{
+    const courseId=req.body;
+    try
+    {
+        const deleteCourse=await Course.delete(courseId);
+        res.status(200).json(deleteCourse);
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error delete course'});
     }
 }

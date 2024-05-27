@@ -77,6 +77,17 @@ const User = {
             console.error('Error sending email:', err); 
             throw err;
         }
+    },
+    searchCourse:async(title)=>
+    {
+        try
+        {
+
+        }
+        catch(err)
+        {
+            throw err;
+        }
     }
 };
 

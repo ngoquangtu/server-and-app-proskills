@@ -1,36 +1,32 @@
+
 import axios from 'axios';
-import Youtube  from '../models/youtubeModel';
-const API_KEY = 'AIzaSyCmKDK1fsiRPOwCjxRwZxU4OduBFEQBEPw';
 
-const searchYouTube = async (query) => {
-    const url = 'https://www.googleapis.com/youtube/v3/search';
+const API_URL = 'http://localhost:8000/api/youtube'; 
 
+const searchYoutube = async (query) => {
     try {
-        const response = await axios.get(url, { 
-            params: {
-                part: 'snippet',
-                q: query,
-                type: 'video',
-                key: API_KEY,
-                maxResults: 20,
-            },
-        });
-        return response.data.items;
+        const response = await axios.get(`${API_URL}/search?q=${query}`);
+        return response.data;
     } catch (error) {
-        console.error('Error searching YouTube:', error);
-        throw new Error('Error searching YouTube');
+        console.error('Error fetching courses:', error);
+        throw error;
     }
 };
-const getEmbedCode= (url)=>
+const getEmbededCode= async(url)=>
 {
-    const videoId = Youtube.extractVideoId(url);
-    
-    if (videoId) {
-        return Youtube.generateEmbededCode(videoId);
-    } else {
-        return 'Invalid YouTube URL';
+    try
+    {
+        const response=await axios.get(`${API_URL}/embeded-code`, { url });
+        return response.data;
     }
-};
+    catch(err)
+    {
+        throw err;
+    }
+}
+const youtubeService={
+    searchYoutube,
+    getEmbededCode
 
-const youtubeService = { searchYouTube,getEmbedCode };
+}
 export default youtubeService;

@@ -14,4 +14,7 @@ const getUserInfor=async(userId)=>
         throw err;
     }
 }
-export default getUserInfor;
+const userService={
+    getUserInfor
+}
+export default userService;

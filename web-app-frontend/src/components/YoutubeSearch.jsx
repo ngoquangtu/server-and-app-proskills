@@ -12,7 +12,7 @@ const YoutubeSearch = () => {
         setError(''); // Clear any previous errors  
 
         try {
-            const data = await youtubeService.searchYouTube(query);
+            const data = await youtubeService.searchYoutube(query);
             if (data.length > 0) {
                 setResults(data);
             } else {
@@ -48,7 +48,6 @@ const YoutubeSearch = () => {
                                 width="560"
                                 height="315"
                                 src={`https://www.youtube.com/embed/${item.id.videoId}`}
-                                frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen
                                 className="youtube-video-iframe"

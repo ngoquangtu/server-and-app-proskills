@@ -27,9 +27,9 @@ const getAllComments = async (courseId) => {
     const response = await axios.get(`${API_URL}/courses/${courseId}/comments`);
     return response.data;
 };
-
-export default {
+const commentService={
     createComment,
     deleteComment,
     getAllComments
-};
+}
+export default commentService;

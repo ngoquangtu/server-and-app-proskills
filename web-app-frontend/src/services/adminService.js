@@ -28,6 +28,39 @@ const adminService = {
     } catch (error) {
       throw error;
     }
+  },
+  updateCourse: async (courseData)=>
+    {
+      try{
+        const response=await axios.put(`${API_URL}/update-course`,courseData);
+        return response.data;
+      }
+      catch(err)
+      {
+        throw err;
+      }
+    },
+  getAllUserInfor: async()=>
+  {
+    try{
+      const response=await axios.get(`${API_URL}/allusers`);
+      return response.data;
+    }
+    catch(err)
+    {
+      throw err;
+    }
+  },
+  deleteCourse: async(courseId)=>
+  {
+    try{
+      const response=await axios.delete(`${API_URL}/delete-course`,courseId);
+      return response.data;
+    }
+    catch(err)
+    {
+      throw err;
+    }
   }
 };
 

@@ -20,7 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/youtube" element={<YoutubeEmbedder/>}/>
-        <Route path="/youtubeSearch" element={<YoutubeSearch/>}/>
+        <Route path="/youtubesearch" element={<YoutubeSearch/>}/>
         <Route path="/courses" element={<Course/>} />
         <Route path="/users" element={<UserInformation/>} />
         <Route path="/admin" element={<AdminComponent/>} />
