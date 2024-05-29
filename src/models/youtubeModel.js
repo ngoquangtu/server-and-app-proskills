@@ -41,7 +41,11 @@ const Youtube=
             }
             const regExp = /^.*(youtu\.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|&v=|youtu\.be\/|\/v\/|\/embed\/|watch\?v=|\/?v=|\/v\/)([^#&?]*).*/;
             const match=url.match(regExp);            
-            return (match && match[2].length===11)? match[2]:null;   
+            if (match && match[1]) {
+                return match[1];
+            } else {
+                throw new Error('Invalid URL');
+            }
         }
         catch(err)
         {
@@ -49,7 +53,8 @@ const Youtube=
         }
     },
     
-    generateEmbedCode : (videoId) => {
+    generateEmbedCode : (url) => {
+        const videoId = extractVideoId(url);
         return `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     }
     

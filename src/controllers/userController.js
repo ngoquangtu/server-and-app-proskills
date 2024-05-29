@@ -15,4 +15,16 @@ exports.getUserInfor=async (req,res)=>
     {
         res.status(500).json({ message: 'Error get user infor', error: err.message });
     }
+};
+exports.views=async(req,res)=>
+{
+    try
+    {
+        const viewCount=await User.views();
+        res.status(200).json(viewCount);
+    }
+    catch(err)
+    {
+        res.status(500).json({message: 'Error view page',error:err.message});
+    }
 }

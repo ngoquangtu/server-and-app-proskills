@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto=require('crypto');
+// const uuidv4 = require('uuid').v4;// create an unique string
 require('dotenv').config();
 
 exports.register = async (req, res) => {
@@ -12,7 +13,6 @@ exports.register = async (req, res) => {
         if (userByEmail) {
             return res.json({ message: 'Email already exists, try again!!!' });
         }
-
         await  User.createInfo({ username, email, password });
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
@@ -26,6 +26,7 @@ exports.login = async (req, res) => {
 
     try {
         const user = await User.findEmail(email);
+
         
         if (!user) {
             return res.status(200).json({ message: 'Email is not exists!!Please try again!!' });
@@ -35,16 +36,21 @@ exports.login = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(200).json({ message: 'Email or password is wrong!!' });
         }
+        const token = jwt.sign({ userId: user.id, username: user.username,role: user.role,isPopup: false }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
-        const token = jwt.sign({ userId: user.id, username: user.username,role: user.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        // const session_id=uuidv4();
+        // console.log(session_id);
+        // await User.saveSessionId(session_id,user.id);
+
         res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+        // res.cookie('session_id', session_id, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
         res.status(200).json({ message: 'Authentication successfully' });
     } catch (err) {
         res.status(500).json({ message: 'Error during authentication' });
     }
 };
 
-exports.logout = (req, res) => {
+exports.logout =async (req, res) => {
     res.clearCookie('token');
     res.status(200).json({ message: 'Logged out successfully' });
 };

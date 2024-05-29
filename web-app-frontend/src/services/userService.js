@@ -13,8 +13,21 @@ const getUserInfor=async(userId)=>
     {
         throw err;
     }
+};
+const view=async()=>
+{
+    try
+    {
+        const response=await axios.post(API_URL+'/views');
+        return response.data;
+    }
+    catch(err)
+    {
+        throw err ;
+    }
+        
 }
 const userService={
-    getUserInfor
+    getUserInfor,view
 }
 export default userService;

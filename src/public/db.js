@@ -10,7 +10,6 @@ const dbConfig = {
 async function connectToDatabase() {
     try {
       const connection = await mysql.createConnection(dbConfig);
-      console.log('Connected to MySQL database');
       return connection;
     } catch (err) {
       console.error('Error connecting to MySQL database:', err);

@@ -20,6 +20,7 @@ const login = async (email, password) => {
         const response = await axios.post(API_URL + 'login', { email, password });
         if (response.data.token) {
             document.cookie = `token=${response.data.token};path=/`;
+            localStorage.setItem('auth', 'true');
         }
         return response.data;
     } catch (error) {
@@ -31,11 +32,15 @@ const logout = async () => {
     try {
         await axios.post(API_URL + 'logout');
         document.cookie = 'token=;path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC;secure;HttpOnly;SameSite=Strict';
+        localStorage.removeItem('auth');
         return { message: 'Logged out successfully' };
     } catch (error) {
         throw new Error('Logout failed');
     }
 };
+const isAuthenticated = () => {
+    return localStorage.getItem('auth') === 'true';
+  };
 const resetPassword=async (gmail,token)=>
 {
     try
@@ -53,6 +58,7 @@ const authService = {
     register,
     login,
     logout,
+    isAuthenticated,
     resetPassword
 };
 

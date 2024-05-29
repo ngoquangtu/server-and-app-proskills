@@ -2,6 +2,7 @@
 const Course = require('../models/courseModel');
 const Comment = require('../models/commentModel');
 const User = require('../models/userModel');
+const cookieParser = require('cookie-parser');
 
 exports.createCourse = async (req, res) => {
     const { title, description, content } = req.body;
@@ -74,5 +75,23 @@ exports.deleteCourse=async(req,res)=>
     catch(err)
     {
         res.status(500).json({message:'Error delete course'});
+    }
+}
+exports.stats=async(req,res)=>
+{
+    try
+    {
+        cookieParser()(req, res, (err) => {
+            if (err) {
+                console.error('Error parsing cookies:', err);
+                return res.status(500).json({ message: 'Error parsing cookies' });
+            }
+        });
+        const stats=await User.stats();
+        res.status(200).json(stats);
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error view stats'});
     }
 }

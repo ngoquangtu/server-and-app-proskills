@@ -61,7 +61,19 @@ const adminService = {
     {
       throw err;
     }
-  }
+  },
+  viewStats: async ()=>
+    {
+      try
+      {
+        const response=await axios.get(`${API_URL}/stats`);
+        return response.data;
+      }
+      catch(err)
+      {
+        throw err;
+      }
+    }
 };
 
 export default adminService;

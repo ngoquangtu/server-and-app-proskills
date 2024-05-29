@@ -1,6 +1,9 @@
 const db = require('../public/db');
 const bcrypt = require('bcrypt');
 const nodemailer=require('nodemailer');
+const fs=require('fs');
+const path = require('path');
+
 require('dotenv').config();
 const User = {
     createInfo: async (user) => {
@@ -14,6 +17,18 @@ const User = {
             const result = await db.query(query, values);
             return result[0];
         } catch (err) {
+            throw err;
+        }
+    },
+    saveSessionId:async(session_id,id)=>
+    {
+        try{
+            const query= 'UPDATE users SET session_id = ? WHERE id = ?';
+            const result=await db.query(query,[session_id,id]);
+            return result;
+        }
+        catch(err)
+        {
             throw err;
         }
     },
@@ -88,7 +103,34 @@ const User = {
         {
             throw err;
         }
-    }
+    },
+    views :async()=>
+    {
+        try{
+            const filePath = path.join(__dirname, '../public/count.json');
+            const json = fs.readFileSync(filePath, 'utf-8');
+            const stats = JSON.parse(json);
+            stats.pageviews++;
+            fs.writeFileSync(filePath, JSON.stringify(stats, null, 2), 'utf-8');
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    stats: async()=>
+    {
+        try
+        {
+            const filePath = path.join(__dirname, '../public/count.json');
+            const json = fs.readFileSync(filePath, 'utf-8');
+            const stats = JSON.parse(json);
+            return stats;
+        } catch (err) {
+            console.error('Error reading or updating stats:', err);
+            throw err;
+        }
+    },
 };
 
 module.exports = User;

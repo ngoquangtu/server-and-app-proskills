@@ -18,7 +18,7 @@ exports.getEmbededCode=async (req,res)=>
 
     if (embedCode === 'Invalid YouTube URL') {
         res.status(400).send(embedCode);
-    } else {
-        res.json(embedCode);
-    }
+    
+    } 
+    res.json(embedCode);
 }

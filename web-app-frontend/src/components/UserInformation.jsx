@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import getUserInfor from '../services/userService'; // Adjust the path as needed
+import userService from '../services/userService'; 
 
 const UserInformation = () => {
     const [userId, setUserId] = useState('');
@@ -11,7 +11,7 @@ const UserInformation = () => {
         setLoading(true);
         setError(null);
         try {
-            const data = await getUserInfor(userId);
+            const data = await userService.getUserInfor(userId);
             setUser(data);
         } catch (err) {
             setError(err);

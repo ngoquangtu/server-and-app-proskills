@@ -1,3 +1,4 @@
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -13,18 +14,13 @@ exports.verifyToken = (req, res, next) => {
         req.userId = decoded.userId;
         req.username = decoded.username;
         req.role = decoded.role;
+        req.isPopup=decoded.isPopup;
         next();
     });
 };
-
 exports.isAdmin = (req, res, next) => {
-    
     if (req.role !== 'admin') {
         return res.status(403).json({ message: 'Require Admin Role!' });
     }
-    else
-    {
-        next();
-    }
-
+    next();
 };

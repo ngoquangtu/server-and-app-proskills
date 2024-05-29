@@ -16,7 +16,7 @@ const getEmbededCode= async(url)=>
 {
     try
     {
-        const response=await axios.get(`${API_URL}/embeded-code`, { url });
+        const response = await axios.get(`${API_URL}/embeded-code?url=${encodeURIComponent(url)}`);
         return response.data;
     }
     catch(err)
@@ -26,7 +26,6 @@ const getEmbededCode= async(url)=>
 }
 const youtubeService={
     searchYoutube,
-    getEmbededCode
-
+    getEmbededCode  
 }
 export default youtubeService;
