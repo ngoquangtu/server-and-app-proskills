@@ -12,6 +12,7 @@ token={token}
   return (
     <div>
       <h1>Admin Component</h1>
+      <h2>Admin Role</h2>
       <CommentFormComponent courseId={courseId}  />
       <CommentListComponent  />
     </div>
