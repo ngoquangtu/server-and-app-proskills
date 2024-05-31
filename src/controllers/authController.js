@@ -76,7 +76,6 @@ exports.sendEmail=async (req,res)=>
 };
 exports.changePassword = async (req, res) => {
     const { email,password,newPassword } = req.body;
-
     try {
         const user = await User.findEmail(email);
         if (!user) {
@@ -87,10 +86,14 @@ exports.changePassword = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(200).json({ message: 'Email or password is wrong!!' });
         }
-        else
+        const success=  await User.changePassword(newPassword,user.email);
+         if(success)
         {
-            await User.changePassword(newPassword);
-            return res.status(200).json({ message: 'Change password succesfully!!' });
+            return res.status(200).json({ message: 'Change password successfully' });
+        }
+        else if (!success)
+        {
+            return res.status(200).json({ message: 'Change password failed' });
         }
     } catch (err) {
         res.status(500).json({ message: 'Error during auth  entication' });

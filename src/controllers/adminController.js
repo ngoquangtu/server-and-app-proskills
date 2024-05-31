@@ -2,7 +2,6 @@
 const Course = require('../models/courseModel');
 const Comment = require('../models/commentModel');
 const User = require('../models/userModel');
-const cookieParser = require('cookie-parser');
 
 exports.createCourse = async (req, res) => {
     const { title, description, content } = req.body;

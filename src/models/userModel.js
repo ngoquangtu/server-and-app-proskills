@@ -20,13 +20,14 @@ const User = {
             throw err;
         }
     },
-    changePassword:async(password)=>
+    changePassword:async(password,email)=>
     {
         try{
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
-            const query= 'UPDATE users SET password = ? WHERE id = ?';
-            const result=await db.query(query,[hashedPassword]);
+            const query= `UPDATE users SET password = ? WHERE  email=?`;
+
+            const result=await db.query(query,[hashedPassword,email]);
             return result;
         }
         catch(err)
@@ -110,7 +111,7 @@ const User = {
         try
         {
             const query='SELECT * FROM Courses WHERE title LIKE ?';
-            const rows= await db.query(query,title);
+            const rows= await db.query(query,[`%${title}%`]);
             return rows;
         }
         catch(err)
