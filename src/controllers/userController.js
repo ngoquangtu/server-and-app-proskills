@@ -28,3 +28,20 @@ exports.views=async(req,res)=>
         res.status(500).json({message: 'Error view page',error:err.message});
     }
 }
+exports.searchCourse=async(req,res)=>
+    {
+        try
+        {
+            const title=req.body;
+            const courses=await User.searchCourse(title);
+            if (!courses) {
+                return res.status(404).json({ message: 'Courses not found' });
+            }
+            res.status(200).json(courses);
+            
+        }
+        catch(err)
+        {
+            res.status(500).json({message: 'Error search courses',error:err.message});
+        }
+    }

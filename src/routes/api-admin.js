@@ -9,7 +9,7 @@ router.delete('/delete-comment', [verifyToken ,isAdmin], adminController.deleteC
 router.get('/comments',[verifyToken ,isAdmin],adminController.getAllComment);
 router.get('/allusers',[verifyToken ,isAdmin],adminController.getAllUsers);
 router.get('/update-course',[verifyToken ,isAdmin],adminController.updateCourses);
-router.get('/delete-course',[verifyToken ,isAdmin],adminController.deleteCourse);
+router.delete('/delete-course',[verifyToken ,isAdmin],adminController.deleteCourse);
 router.get('/stats',[verifyToken ,isAdmin],adminController.stats);
 
 

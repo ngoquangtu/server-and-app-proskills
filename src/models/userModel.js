@@ -20,18 +20,6 @@ const User = {
             throw err;
         }
     },
-    saveSessionId:async(session_id,id)=>
-    {
-        try{
-            const query= 'UPDATE users SET session_id = ? WHERE id = ?';
-            const result=await db.query(query,[session_id,id]);
-            return result;
-        }
-        catch(err)
-        {
-            throw err;
-        }
-    },
     changePassword:async(password)=>
     {
         try{
@@ -121,7 +109,9 @@ const User = {
     {
         try
         {
-
+            const query='SELECT * FROM Courses WHERE title LIKE ?';
+            const rows= await db.query(query,title);
+            return rows;
         }
         catch(err)
         {

@@ -69,8 +69,8 @@ exports.deleteCourse=async(req,res)=>
     const courseId=req.body;
     try
     {
-        const deleteCourse=await Course.delete(courseId);
-        res.status(200).json(deleteCourse);
+        await Course.delete(courseId);
+        res.status(200).json('Delete courses successfully');
     }
     catch(err)
     {

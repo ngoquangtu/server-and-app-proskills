@@ -47,9 +47,18 @@ const Course=
         }
     },
     delete: async (id) => {
+
+   
+        const query2= 'DELETE FROM Comments WHERE course_id = ?';
+        const query3='DELETE FROM Video WHERE course_id = ?';
+        const query4='DELETE FROM Enrollments WHERE course_id = 1';
         const query = 'DELETE FROM courses WHERE id = ?';
 
+
         try {
+            await db.query(query2,[id]);
+            await db.query(query3,[id]);
+            await db.query(query4,[id]);
             const result = await db.query(query, [id]);
             return result[0];
         } catch (err) {
