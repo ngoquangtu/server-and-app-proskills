@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import authService from '../services/authService';
 
-const ResetPassword = () => {
+function ResetPassword() {
+    const [gmail, setGmail] = useState('');
     const [message, setMessage] = useState('');
-    const [email, setEmail] = useState('');
 
     const handleResetPassword = async (e) => {
         e.preventDefault();
         try {
-            const response = await authService.resetPassword(email);
-            setMessage(response.message); 
+            await authService.resetPassword(gmail);
+            setMessage('Password reset email sent');
         } catch (error) {
-            setMessage(error.message);
+            setMessage('Password reset failed');
         }
     };
 
@@ -19,18 +19,12 @@ const ResetPassword = () => {
         <div>
             <h2>Reset Password</h2>
             <form onSubmit={handleResetPassword}>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    required
-                />
-                <button type="submit">Send Password Reset Email</button>
+                <input type="email" placeholder="Gmail" value={gmail} onChange={(e) => setGmail(e.target.value)} required />
+                <button type="submit">Reset Password</button>
             </form>
             {message && <p>{message}</p>}
         </div>
     );
-};
+}
 
 export default ResetPassword;

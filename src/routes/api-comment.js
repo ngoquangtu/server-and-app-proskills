@@ -7,7 +7,7 @@ const { verifyToken } = require('../middleware/authJWT');
 router.post('/courses/:courseId/comments', verifyToken, commentController.create);
 
 // Xóa bình luận cụ thể
-router.delete('/courses/:courseId/comments/:commentId', verifyToken, commentController.delete);
+router.delete('/courses/:courseId/comments/:commentId', commentController.delete);
 
 // Lấy tất cả các bình luận cho một khóa học cụ thể
 router.get('/courses/:courseId/comments', commentController.getAllComment);

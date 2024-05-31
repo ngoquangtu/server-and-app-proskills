@@ -32,9 +32,33 @@ const User = {
             throw err;
         }
     },
+    changePassword:async(password)=>
+    {
+        try{
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+            const query= 'UPDATE users SET password = ? WHERE id = ?';
+            const result=await db.query(query,[hashedPassword]);
+            return result;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
     findEmail: async (email) => {
         try {
             const query = 'SELECT * FROM users WHERE email = ?';
+            const rows = await db.query(query, [email]);
+            return rows[0];
+        } catch (err) {
+            throw err;
+        }
+    },
+    findInforUser:async(email)=>
+    {
+        try {
+            const query = 'SELECT username,role,id,email,avatar_url,created_at FROM users WHERE email = ?';
             const rows = await db.query(query, [email]);
             return rows[0];
         } catch (err) {
