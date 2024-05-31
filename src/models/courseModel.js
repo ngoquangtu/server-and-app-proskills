@@ -51,7 +51,7 @@ const Course=
    
         const query2= 'DELETE FROM Comments WHERE course_id = ?';
         const query3='DELETE FROM Video WHERE course_id = ?';
-        const query4='DELETE FROM Enrollments WHERE course_id = 1';
+        const query4='DELETE FROM Enrollments WHERE course_id = ?';
         const query5='DELETTE FROM Comments_course WHERE course_id=?'
         const query = 'DELETE FROM courses WHERE id = ?';
 
