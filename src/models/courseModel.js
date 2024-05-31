@@ -52,13 +52,16 @@ const Course=
         const query2= 'DELETE FROM Comments WHERE course_id = ?';
         const query3='DELETE FROM Video WHERE course_id = ?';
         const query4='DELETE FROM Enrollments WHERE course_id = 1';
+        const query5='DELETTE FROM Comments_course WHERE course_id=?'
         const query = 'DELETE FROM courses WHERE id = ?';
+
 
 
         try {
             await db.query(query2,[id]);
             await db.query(query3,[id]);
             await db.query(query4,[id]);
+            await db.query(query5,[id]);
             const result = await db.query(query, [id]);
             return result[0];
         } catch (err) {
