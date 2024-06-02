@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Proskills from '../assets/Proskills.svg';
 import {useFonts} from 'expo-font';
+import {CustomTextInput, CustomSecureTextInput} from '../components/TextInput';
 import React from 'react'
-import {CustomButton3, CustomButton4} from '../components/Button';
+import {CustomButton0, CustomButton1} from '../components/Button';
 
 const index = () => {
   const [loaded] = useFonts({
@@ -16,12 +17,16 @@ const index = () => {
   return (
     <View style={styles.container}>
       <Proskills style={styles.nameLogo} width={149} height={45}/>
-      <Text style={styles.title1}>Welcome!</Text>
-      <Text style={styles.title2}>Sign up to continue!</Text>
-      <CustomButton3 title={"Sign up with email"} style={styles.signUpEmail}/>
-      <Text style={styles.description}>By signing up you are agreed with our friendly terms and condition.</Text>
-      <Text style={[styles.description, {position: 'absolute', top: 630}]}>Already have an account?</Text>
-      <CustomButton4 title={"Sign in"} style={styles.signInButton}/>
+      <Text style={styles.title}>Welcome back! Sign in to continue!</Text>
+      <View style={styles.inputField}>
+        <CustomTextInput placeHolder={"Username"} warningText={"password is not valid"}/>
+        <CustomSecureTextInput placeHolder={"**********"} warningText={"password is not valid"}/>
+      </View>
+
+      <View style={styles.buttonField}>
+        <CustomButton0 title={"Log in"}/>
+        <CustomButton1 title={"Forgot password"}/>
+      </View>
     </View>
   )
 }
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
   nameLogo:{
     marginTop: 68,
   },
-  title1:{
+  title:{
     position: 'absolute',
     top: 214,
     width: 234,
@@ -47,30 +52,13 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontWeight:'bold',
   },
-  title2:{
+  inputField: {
     position: 'absolute',
-    top: 247,
-    width: 234,
-    height: 66,
-    fontFamily: 'PlusJakartaSansMedium',
-    fontSize: 26,
-    textAlign:'center',
-    fontWeight:'bold',
+    top: 372,
+    width: 335,
   },
-  signUpEmail:{
+  buttonField: {
     position: 'absolute',
-    top: 350,
-  },
-  description:{
-    position: 'absolute',
-    top: 460,
-    width: 241,
-    height: 45,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  signInButton:{
-    position: 'absolute',
-    top: 630,
+    top: 632,
   }
 })

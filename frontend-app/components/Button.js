@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Text, StyleSheet, View} from "react-native";
+import {Text, StyleSheet, TouchableOpacity} from "react-native";
 import { useFonts } from 'expo-font';
 
-const CustomButton = ({title, type}) => {
+const CustomButton0 = ({title, style}) => {
     const [loaded] = useFonts({
         PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
         PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -12,12 +12,73 @@ const CustomButton = ({title, type}) => {
     }
     
     return (
+        <TouchableOpacity style={[styles.buttonLargeLayout, styles.buttonBackgroundGreen, styles.buttonCenter,{ borderRadius: 6}, style]}>
+            <Text style={[styles.buttonText, styles.buttonColorWhite]}>{title}</Text>
+        </TouchableOpacity>
+    );
+};
 
-        <View style={(type === 0) ? [styles.buttonLargeLayout, styles.buttonColorGreen, styles.buttonCenter,{ borderRadius: 6}]:
-                    (type === 1) ? [styles.buttonLargeLayout, styles.buttonCenter, {borderWidth: 1, borderColor: '#CFD1D4', borderRadius: 6}]:
-                    [styles.buttonSmallLayout, styles.buttonCenter]}>
-            <Text style={ [(type === 0) ? styles.buttonColorGreen : styles.buttonColorWhite, styles.buttonText]}>{title}</Text>
-        </View>
+const CustomButton1 = ({title, style}) => {
+    const [loaded] = useFonts({
+        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
+        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
+    })
+    if(!loaded){
+        return null;
+    }
+    
+    return (
+        <TouchableOpacity style={[styles.buttonLargeLayout, styles.buttonCenter, styles.buttonBackgroundWhite, {borderWidth: 1, borderRadius: 6}, style]}>
+            <Text style={ [styles.buttonText, styles.buttonColorGreen]}>{title}</Text>
+        </TouchableOpacity>
+    );
+};
+
+const CustomButton2 = ({title, style}) => {
+    const [loaded] = useFonts({
+        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
+        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
+    })
+    if(!loaded){
+        return null;
+    }
+    
+    return (
+        <TouchableOpacity style={[styles.buttonSmallLayout, styles.buttonCenter, style]}>
+            <Text style={ [styles.buttonText, styles.buttonColorGreen]}>{title}</Text>
+        </TouchableOpacity>
+    );
+};
+
+const CustomButton3 = ({title, style}) => {
+    const [loaded] = useFonts({
+        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
+        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
+    })
+    if(!loaded){
+        return null;
+    }
+    
+    return (
+        <TouchableOpacity style={[styles.buttonLargeLayout, styles.buttonCenter, {backgroundColor: '#EDEEF0', borderRadius: 6}, style]}>
+            <Text style={[styles.buttonText]}>{title}</Text>
+        </TouchableOpacity>
+    );
+};
+
+const CustomButton4 = ({title, style}) => {
+    const [loaded] = useFonts({
+        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
+        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
+    })
+    if(!loaded){
+        return null;
+    }
+    
+    return (
+        <TouchableOpacity style={[styles.buttonCenter, styles.buttonLargeLayout, style]}>
+            <Text style={[styles.buttonText, styles.buttonColorGreen]}>{title}</Text>
+        </TouchableOpacity>
     );
 };
 
@@ -26,10 +87,10 @@ const styles = StyleSheet.create({
         fontFamily: 'PlusJakartaSans',
         fontSize: 16,
         fontWeight: '700',
+        color: '#0B121F',
     },
 
     buttonCenter: {
-        gap: 10,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -41,8 +102,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 70,
         paddingVertical: 9,
     },
+
     buttonSmallLayout: {
-        width: 78,
         height: 44,
         marginTop: 20,
         marginBottom: 50,
@@ -50,14 +111,21 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
     },
 
-    buttonColorGreen: {
-        color: '#ffffff',
-        backgroundColor: '#12B7BD'
-    },
     buttonColorWhite: {
+        color: '#ffffff',
+    },
+
+    buttonBackgroundWhite:{
+        backgroundColor: '#ffffff',
+    },
+
+    buttonColorGreen: {
         color: '#12B7BD',
-        backgroundColor: '#ffffff'
+    },
+    
+    buttonBackgroundGreen:{
+        backgroundColor: '#12B7BD',
     },
 });
 
-export default CustomButton;
+export {CustomButton0, CustomButton1, CustomButton2, CustomButton3, CustomButton4};
