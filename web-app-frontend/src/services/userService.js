@@ -26,8 +26,27 @@ const view=async()=>
         throw err ;
     }
         
-}
+};
+const uploadAvatar=async(file)=>
+{
+    try
+    {
+        const formData = new FormData();
+        formData.append('avatar', file);
+        const response = await axios.post(`${API_URL}uploadavatar`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                withCredentials: true, // Include cookies in the request if needed
+            },
+        });
+        return response.data;
+    }
+    catch(err)
+    {
+        throw err;
+    }
+};
 const userService={
-    getUserInfor,view
+    getUserInfor,view,uploadAvatar
 }
 export default userService;

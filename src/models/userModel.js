@@ -4,6 +4,7 @@ const nodemailer=require('nodemailer');
 const fs=require('fs');
 const path = require('path');
 
+
 require('dotenv').config();
 const User = {
     createInfo: async (user) => {
@@ -146,6 +147,33 @@ const User = {
             throw err;
         }
     },
+    uploadAvatar: async(img,id)=>
+    {
+       try
+       {
+            const query='UPDATE users set avatar_url=? WHERE id=?';
+            const rows=await db.query(query,[img,id]);
+            return rows;
+       }
+       catch(err)
+       {
+            throw err;
+       }
+    },
+    readAvatar: async(id)=>
+    {
+        try
+        {
+             const query='SELECT avatar_url from users WHERE id=?';
+             const rows=await db.query(query,id);
+             return rows[0].avatar_url;
+        }
+        catch(err)
+        {
+             throw err;
+        }
+    }
+
 };
 
 module.exports = User;
