@@ -71,17 +71,16 @@ exports.uploadAvatar=async(req,res)=>
         res.status(500).json({message:'Error upload img '});
     }
 };
-exports.getAvatar=async (req,res)=>
-{
-    try
-    {
-        const userId = req.params;
-        await User.readAvatar(userId);
-        res.status(200).send({message:'Fetch avatar successfull'});
-
+exports.getAvatar = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const avatar = await User.readAvatar(userId);
+        if (!avatar) {
+            return res.status(404).json({ message: 'Avatar not found' }); 
+        }
+        res.status(200).send(avatar); 
+    } catch (err) {
+        console.error('Error fetching avatar:', err);
+        res.status(500).json({ message: 'Error fetching avatar', error: err.message });
     }
-    catch(err)
-    {
-        res.status(500).json({message:'Error fetch avatar'});
-    }
-}
+};

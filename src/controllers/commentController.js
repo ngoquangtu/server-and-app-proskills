@@ -1,42 +1,40 @@
-const Comment=require('../models/commentModel');
+const Comment = require('../models/commentModel');
 
-exports.delete=async(req,res)=>
-{
+exports.delete = async (req, res) => {
     try {
         const { commentId } = req.params;
-        await Comment.delete(commentId);
-        res.status(200).json({ message: 'Comment deleted successfully' });
+        const deleted = await Comment.delete(commentId);
+        if (deleted) {
+            res.status(200).json({ message: 'Comment deleted successfully' }); // 200 OK
+        } else {
+            res.status(404).json({ message: 'Comment not found' }); // 404 Not Found
+        }
     } catch (err) {
-        res.status(500).json({ message: 'Error deleting comment' });
+        console.error('Error deleting comment:', err);
+        res.status(500).json({ message: 'Error deleting comment', error: err.message }); 
     }
 };
-exports.create=async(req,res)=>
-{
-    try
-    {
+
+exports.create = async (req, res) => {
+    try {
         const { content, rating } = req.body;
         const courseId = req.params.courseId;
         const userId = req.userId;
-        const comment = await Comment.create({ courseId,userId,content, rating  });
-        res.status(201).json(comment);
+        const comment = await Comment.create({ courseId, userId, content, rating });
+        res.status(201).json(comment); // 201 Created
+    } catch (err) {
+        console.error('Error creating comment:', err);
+        res.status(500).json({ message: 'Error creating comment', error: err.message }); 
     }
-    catch(err)
-    {
-        res.status(500).json({ message: 'Error creating comment' });
-    }
-
-    
 };
-exports.getAllComment=async(req,res)=>
-{
-    try
-    {
-        const {courseId}=req.params;
-        const comment=Comment.getAllComment(courseId);
-        res.status(200).json(comment);
-    }
-    catch(err)
-    {
-        res.status(500).json({message:'Error get all comment by course'});
+
+exports.getAllComment = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const comments = await Comment.getAllComment(courseId);
+        res.status(200).json(comments); // 200 OK
+    } catch (err) {
+        console.error('Error getting all comments:', err);
+        res.status(500).json({ message: 'Error getting all comments by course', error: err.message }); 
     }
 };
