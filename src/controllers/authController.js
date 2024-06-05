@@ -1,3 +1,4 @@
+const Status = require('../models/constant')
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -9,13 +10,13 @@ exports.register = async (req, res) => {
     try {
         const userByEmail = await User.findEmail(email);
         if (userByEmail) {
-            return res.status(409).json({ message: 'Email already exists, try again!!!' }); // 409 Conflict
+            return res.status(200).json({type: Status.INVALID_EMAIL, message: 'Email already exists, try again!!!' }); // 409 Conflict
         }
         await User.createInfo({ username, email, password });
-        res.status(201).json({ message: 'User registered successfully' }); // 201 Created
+        res.status(200).json({type: Status.SUCCESS, message: 'User registered successfully' }); // 201 Created
     } catch (err) {
         console.error('Error during registration:', err);
-        res.status(500).json({ message: 'Error while registering', error: err.message }); // 500 Internal Server Error
+        res.status(500).json({type: Status.SUCCESS, message: 'Error while registering', error: err.message }); // 500 Internal Server Error
     }
 };
 
