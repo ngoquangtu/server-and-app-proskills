@@ -73,8 +73,8 @@ exports.uploadAvatar=async(req,res)=>
 };
 exports.getAvatar = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const avatar = await User.readAvatar(userId);
+        const { id } = req.params;
+        const avatar = await User.readAvatar(id);
         if (!avatar) {
             return res.status(404).json({ message: 'Avatar not found' }); 
         }

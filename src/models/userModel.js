@@ -164,8 +164,8 @@ const User = {
     {
         try
         {
-             const query='SELECT avatar_url from users WHERE id=?';
-             const rows=await db.query(query,id);
+             const query='SELECT avatar_url from users WHERE id= ?';
+             const rows=await db.query(query,[id]);
              return rows[0];
         }
         catch(err)
