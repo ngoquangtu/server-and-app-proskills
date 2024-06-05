@@ -28,7 +28,7 @@ exports.views=async(req,res)=>
     {
         res.status(500).json({message: 'Error view page',error:err.message});
     }
-}
+};
 exports.searchCourse=async(req,res)=>
     {
         try
@@ -44,15 +44,14 @@ exports.searchCourse=async(req,res)=>
         catch(err)
         {
             res.status(500).json({message: 'Error search courses',error:err.message});
-        }
-    }
+       }
+    };
 exports.uploadAvatar=async(req,res)=>
 {
     try
     {
 
-        const userId = req.user?.userId; // Assuming userId is in the decoded JWT payload
-
+        const userId = req.user?.userId; 
         if (!req.file) {
             return res.status(400).send('No file selected');
           }
@@ -65,10 +64,24 @@ exports.uploadAvatar=async(req,res)=>
             name: req.file.originalname,
         };
        await User.uploadAvatar(image,userId);
-        res.status(200).send({ message: 'Image uploaded successfully' });
+        res.status(201).send({ message: 'Image uploaded successfully' });
     }
     catch(err)
     {
         res.status(500).json({message:'Error upload img '});
+    }
+};
+exports.getAvatar=async (req,res)=>
+{
+    try
+    {
+        const userId = req.params;
+        await User.readAvatar(userId);
+        res.status(200).send({message:'Fetch avatar successfull'});
+
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error fetch avatar'});
     }
 }

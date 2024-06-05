@@ -166,14 +166,13 @@ const User = {
         {
              const query='SELECT avatar_url from users WHERE id=?';
              const rows=await db.query(query,id);
-             return rows[0].avatar_url;
+             return rows[0];
         }
         catch(err)
         {
              throw err;
         }
     }
-
 };
 
 module.exports = User;
