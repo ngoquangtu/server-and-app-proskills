@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useFonts } from 'expo-font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const CustomTextInput = ({placeHolder, warningText, style}) => {
+const CustomTextInput = ({placeHolder, warningText, style, onChangeText, onBlur}) => {
     const [loaded] = useFonts({
         PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
         PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -13,18 +13,17 @@ const CustomTextInput = ({placeHolder, warningText, style}) => {
     return null;
     }
 
-    const [input, setInput] = useState("");
-
     return <View style={[style, {marginTop: 10}]}>
         <TextInput style={styles.input}
         placeholder={placeHolder}
-        onChangeText={val => setInput(val)}
-        defaultValue={input}/>
+        onChangeText={onChangeText}
+        onBlur={onBlur}
+        defaultValue={""}/>
         <Text style={[styles.text]}>{warningText}</Text>
     </View>;
 };
 
-const CustomSecureTextInput = ({placeHolder, warningText, style}) => {
+const CustomSecureTextInput = ({placeHolder, warningText, style, onChangeText, onBlur}) => {
     const [loaded] = useFonts({
         PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
         PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -34,14 +33,14 @@ const CustomSecureTextInput = ({placeHolder, warningText, style}) => {
     }
 
     const [hidePassword, setHidePassword] = useState(true);
-    const [input, setInput] = useState("");
 
     return <View style={[style, {marginTop: 10}]}>
         <TextInput style={styles.input}
         placeholder={placeHolder}
-        onChangeText={val => setInput(val)}
+        onChangeText={onChangeText}
+        onBlur={onBlur}
         secureTextEntry={hidePassword}
-        defaultValue={input}></TextInput>
+        defaultValue={""}></TextInput>
         <TouchableOpacity style={styles.iconField} onPress={()=>{
             setHidePassword(!hidePassword);
         }}>

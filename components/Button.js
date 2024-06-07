@@ -1,8 +1,10 @@
 import * as React from "react";
 import {Text, StyleSheet, TouchableOpacity} from "react-native";
 import { useFonts } from 'expo-font';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CustomButton0 = ({title, style, onPress}) => {
+const CustomButton0 = ({title, style, onPress, textStyle}) => {
     const [loaded] = useFonts({
         PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
         PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -13,7 +15,7 @@ const CustomButton0 = ({title, style, onPress}) => {
     
     return (
         <TouchableOpacity onPress={onPress} style={[styles.buttonLargeLayout, styles.buttonBackgroundGreen, styles.buttonCenter,{ borderRadius: 6}, style]}>
-            <Text style={[styles.buttonText, styles.buttonColorWhite]}>{title}</Text>
+            <Text style={[styles.buttonText, styles.buttonColorWhite, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
 };
@@ -66,7 +68,7 @@ const CustomButton3 = ({title, style, onPress}) => {
     );
 };
 
-const CustomButton4 = ({title, style, onPress}) => {
+const CustomButton4 = ({title, style, onPress, textColor}) => {
     const [loaded] = useFonts({
         PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
         PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -76,9 +78,55 @@ const CustomButton4 = ({title, style, onPress}) => {
     }
     
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.buttonCenter, styles.buttonLargeLayout, style]}>
-            <Text style={[styles.buttonText, styles.buttonColorGreen]}>{title}</Text>
+        <TouchableOpacity onPress={onPress} style={[styles.buttonCenter,styles.buttonFitLayout, style]}>
+            <Text style={[styles.buttonText, textColor? {color: textColor} : styles.buttonColorGreen]}>{title}</Text>
         </TouchableOpacity>
+    );
+};
+
+const BackToHomeButton = ({style, onPress}) => {
+    const [loaded] = useFonts({
+        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
+        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
+    })
+    if(!loaded){
+        return null;
+    }
+
+    return (
+        <TouchableOpacity onPress={onPress} style={[styles.buttonCenter, {flexDirection: 'row'}, style]}>
+            <MaterialCommunityIcons name="chevron-left" style={[styles.backToHomeButton, {fontSize: 20}]}/>
+            <Text style={[styles.buttonText, styles.buttonColorGreen, styles.backToHomeButton]}>Back to Home</Text>
+        </TouchableOpacity>
+    );
+}
+
+const FloatingLoginButton = ({title, style, onPress, navigation}) => {
+    const [showButton, setShowButton] = React.useState(true);
+
+    React.useEffect(() => {
+        AsyncStorage.getItem('jwtToken').then(value => {
+        setShowButton(value ? true : false);
+        });
+    }, []);
+
+    const [loaded] = useFonts({
+        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
+        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
+    })
+    if(!loaded){
+        return null;
+    }
+    
+    return (
+        showButton?
+        <TouchableOpacity 
+            onPress={() => {
+                navigation.navigate("Onboarding");
+            }} 
+            style={[styles.floatingLoginButton, styles.buttonBackgroundGreen, styles.buttonCenter, style]}>
+            <Text style={[styles.buttonText, styles.buttonColorWhite, {fontSize: 20}]}>{title}</Text>
+        </TouchableOpacity> : <></>
     );
 };
 
@@ -111,6 +159,11 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
     },
 
+    buttonFitLayout:{
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+    },
+
     buttonColorWhite: {
         color: '#ffffff',
     },
@@ -126,6 +179,22 @@ const styles = StyleSheet.create({
     buttonBackgroundGreen:{
         backgroundColor: '#12B7BD',
     },
+
+    backToHomeButton:{
+        color: '#70747E',
+        fontFamily: 'PlusJakartaSans',
+        fontSize: 13,
+        fontWeight: 'medium',
+        letterSpacing: 1,
+    },
+
+    floatingLoginButton: {
+        width: '100%',
+        height: 50,
+        position: 'absolute',
+        bottom: -657,
+    },
+
 });
 
-export {CustomButton0, CustomButton1, CustomButton2, CustomButton3, CustomButton4};
+export {CustomButton0, CustomButton1, CustomButton2, CustomButton3, CustomButton4, BackToHomeButton, FloatingLoginButton};

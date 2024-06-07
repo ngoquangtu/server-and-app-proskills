@@ -12,7 +12,7 @@ export default function OnboardingPage({navigation}) {
 
       <CustomButton0 title="Register" onPress={() => navigation.navigate('SignUp')}/>
       <CustomButton1 title="Log in" onPress={() => navigation.navigate('SignIn')}/>
-      <CustomButton2 title="Skip"/>
+      <CustomButton2 title="Skip" onPress={() => navigation.navigate('HomePage')}/>
     </View>
   );
 }

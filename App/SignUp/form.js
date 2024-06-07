@@ -3,8 +3,11 @@ import { useFonts } from 'expo-font'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { CustomTextInput, CustomSecureTextInput } from '../../components/TextInput'
 import { CustomButton0 } from '../../components/Button'
+import { useState } from 'react'
+import {LOCALHOST, PORT} from '@env'
+import { validateEmail } from '../../utils/Utility'
 
-const SignUpForm = ({navigation}) => {
+export default function SignUpForm({navigation}) {
   const [loaded] = useFonts({
     PlusJakartaSans: require('../../assets/fonts/Plus Jakarta Sans.ttf'),
     PlusJakartaSansMedium: require('../../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -12,6 +15,51 @@ const SignUpForm = ({navigation}) => {
   if(!loaded){
       return null;
   }
+
+  const [inputErrors, setInputErrors] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+
+  const [currentInputs, setInputs] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+
+
+  const sendRegisterRequest = async (input) => {
+    try {
+      const api = await `http://${LOCALHOST}:${PORT}/api/auth/register`;
+      console.log(api);
+      const response = await fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: input.username,
+          password: input.password,
+          email: input.email,
+        }),
+      });
+
+      if(response.status === 201){
+        navigation.navigate('SignUpDone');
+        return;
+      }
+      if(response.status === 409){
+        setInputErrors({...inputErrors, email: 'The email is already exist'});
+        return;
+      }
+      
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error);
+    }
+  };
 
   return (
     <View >
@@ -21,18 +69,93 @@ const SignUpForm = ({navigation}) => {
       <Text style={styles.description}>Enter your details</Text>
 
       <View style={styles.formField}>
-        <CustomTextInput placeHolder={"username"} />
-        <CustomTextInput placeHolder={"email address"} warningText={"please enter valid email"}/>
-        <CustomSecureTextInput placeHolder={"**********"} warningText={"must contain 8 characters"}/>
-        <CustomTextInput placeHolder={"confirm password"} warningText={"must match both password"}/>
+        <CustomTextInput 
+          placeHolder={"username"} 
+          onChangeText={(value) => {
+            setInputs({...currentInputs, username: value});
+            if(value) {
+              setInputErrors({...inputErrors, username: ''});
+            }
+          }}
+          onBlur={()=>{
+              if(!currentInputs.username) setInputErrors({...inputErrors, username: 'This cannot be empty!'});
+            }
+          }
+          warningText={inputErrors.username}
+        />
+        <CustomTextInput 
+          placeHolder={"email address"} 
+          onChangeText={(value) => {
+            setInputs({...currentInputs, email: value});
+            if(value) {
+              setInputErrors({...inputErrors, email: ''});
+            }
+          }}
+          onBlur={()=>{
+              if(!currentInputs.email) setInputErrors({...inputErrors, email: 'This cannot be empty!'});
+              else{
+                if(!validateEmail(currentInputs.email)){
+                  setInputErrors({...inputErrors, email: 'This is not an email!'});
+                }
+              }
+            }
+          }
+          warningText={inputErrors.email}
+        />
+        <CustomSecureTextInput 
+          placeHolder={"your password"} 
+          onChangeText={(value) => {
+            setInputs({...currentInputs, password: value});
+            if(value) {
+              setInputErrors({...inputErrors, password: ''});
+            }
+          }}
+          onBlur={()=>{
+              if(!currentInputs.password) setInputErrors({...inputErrors, password: 'This cannot be empty!'});
+              else if(currentInputs.password.length < 8) setInputErrors({...inputErrors, password: 'Password must be at least 8 characters!'})
+            }
+          }
+          warningText={inputErrors.password}/>
+        <CustomSecureTextInput 
+          placeHolder={"confirm password"} 
+          onChangeText={(value) => {
+            setInputs({...currentInputs, confirmPassword: value});
+            if(value) {
+              setInputErrors({...inputErrors, confirmPassword: ''});
+            }
+          }}
+          onBlur={()=>{
+              if(!currentInputs.confirmPassword) setInputErrors({...inputErrors, confirmPassword: 'This cannot be empty!'});
+            }
+          }
+          warningText={inputErrors.confirmPassword}/>
       </View>
 
-      <CustomButton0 title={"Continue"} style={styles.button}/>
+      <CustomButton0 
+        title={"Continue"} 
+        style={styles.button}
+        onPress={
+          () => {
+            if(currentInputs.username && currentInputs.password && currentInputs.email && currentInputs.confirmPassword &&
+              currentInputs.password.length >= 8 && currentInputs.confirmPassword === currentInputs.password){
+              sendRegisterRequest(currentInputs);
+              return;
+            }
+
+            const newInputErrors = {};
+            !currentInputs.username ? newInputErrors.username = 'This cannot be empty!' : {};
+            !currentInputs.email ? newInputErrors.email = 'This cannot be empty!' :
+              (!validateEmail(currentInputs.email))? newInputErrors.email = 'This is not an email!' : {};
+            !currentInputs.password ? newInputErrors.password = 'This cannot be empty!' : 
+              (currentInputs.password.length < 8)? newInputErrors.password = 'Password must be at least 8 characters!' : {};
+            !currentInputs.confirmPassword ? newInputErrors.confirmPassword = 'This cannot be empty!' :
+              (currentInputs.password && currentInputs.confirmPassword !== currentInputs.password) ? newInputErrors.confirmPassword = 'Must match the password': {};
+            setInputErrors(newInputErrors);
+          }
+        }/>
     </View>
   )
 }
-
-export default SignUpForm
 
 const styles = StyleSheet.create({
   backIcon: {

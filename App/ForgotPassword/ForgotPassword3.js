@@ -1,11 +1,11 @@
 import { StyleSheet, Image, View, Text} from 'react-native';
 import { useFonts } from 'expo-font';
-import {CustomButton0, CustomButton1 } from '../components/Button';
+import {CustomButton0, CustomButton1 } from '../../components/Button';
 
-export default function EmailSentPage({navigation}) {
+export default function ChangeSuccess({navigation}) {
   const [loaded] = useFonts({
-    PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
-    PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
+    PlusJakartaSans: require('../../assets/fonts/Plus Jakarta Sans.ttf'),
+    PlusJakartaSansMedium: require('../../assets/fonts/Plus Jakarta Sans Medium.ttf'),
   })
   if(!loaded){
     return null;
@@ -13,13 +13,13 @@ export default function EmailSentPage({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Check your email</Text>
-      <Text style={styles.description}>We've sent a password recover instruction to your email</Text>
-      <Image source={require('../assets/checkEmail.png')} style={styles.image}/>
+      <Text style={styles.title}>Successfully changed</Text>
+      <Text style={styles.description}>Your password has been successfully change! Please log into your account again</Text>
+      <Image source={require('../../assets/checkEmail.png')} style={styles.image}/>
       
       <View style={styles.buttonField}>
-        <CustomButton0 title="Open email app"/>
-        <CustomButton1 title="Will do it later"/>
+        <CustomButton0 title="Log in"/>
+        <CustomButton1 title="Do it later"/>
       </View>
     </View>
   );
