@@ -22,7 +22,7 @@ export default function ForgotPass({navigation}) {
 
   const checkEmailRequest = async (email) => {
     try {
-      const api = await `http://192.168.1.144:8000/api/auth/resetpassword`;
+      const api = await `http://${LOCALHOST}:${PORT}/api/auth/resetpassword`;
       setIsLoading(true);
       const response = await fetch(api, {
         method: 'POST',
@@ -57,7 +57,7 @@ export default function ForgotPass({navigation}) {
       <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
         <MaterialCommunityIcons name='chevron-left' style={styles.backIcon}/>
       </TouchableOpacity>
-      <Text style={styles.description}>Reset password</Text>
+      <Text style={styles.description}>Validate yourself</Text>
       <Text style={styles.description2}>Enter the email associated with your account</Text>
 
       <View style={styles.formField}>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   button:{
     position: 'absolute',
-    top: 650,
+    top: 600,
     alignSelf: 'center',
   },
   indicator: {

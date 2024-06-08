@@ -13,7 +13,7 @@ export default function SignUpDonePage({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register successfully</Text>
+      <Text style={styles.title}>Successfully Registered!</Text>
       <Text style={styles.description}>Your new account has been created! Please log in with your new account</Text>
       <Image source={require('../../assets/checkEmail.png')} style={styles.image}/>
       
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image:{
-    marginBottom: 170,
+    marginBottom: 130,
     width: 231,
     height: 210,
     resizeMode: 'cover',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#0B121F',
     textAlign: 'center',
-    width: 286,
+    width: 340,
     height: 88,
     letterSpacing: 1,
     position: 'absolute',
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
   },
   buttonField: {
     position: 'absolute',
-    top: 520,
+    top: 550,
   }
 });

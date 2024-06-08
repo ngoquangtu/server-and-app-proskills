@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, SafeAreaView, ScrollView, Image, StatusBar } from 'react-native'
 import React from 'react'
+import { FloatingLoginButton } from '../../components/Button'
 
-const Info = () => {
+const Info = ({navigation}) => {
   return (
-    <View style={{marginTop: 100}}>
-      <Text style={{textAlign: 'center'}}>Info</Text>
-    </View>
+    <SafeAreaView>
+      <StatusBar backgroundColor="#12B7BD"/>
+      <ScrollView style={styles.scrollView}>
+      </ScrollView>
+      <FloatingLoginButton title={"Log in / Sign up"} navigation={navigation}/>
+      
+    </SafeAreaView>
   )
 }
 

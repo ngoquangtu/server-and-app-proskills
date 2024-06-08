@@ -62,7 +62,7 @@ export default function SignUpForm({navigation}) {
   };
 
   return (
-    <View >
+    <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
         <MaterialCommunityIcons name='chevron-left' style={styles.backIcon}/>
       </TouchableOpacity>
@@ -158,6 +158,12 @@ export default function SignUpForm({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: -30,
+  },
   backIcon: {
     position: 'absolute',
     top: 84,

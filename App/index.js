@@ -2,16 +2,17 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import OnboardingPage from './Onboarding';
+import MainPage from './MainPage';
 import SignInPage from './SignIn';
-import SignUpPage from './SignUp/SignUp';
 import SignUpForm from './SignUp/form';
+import SignUpPage from './SignUp/SignUp';
+import SignUpDonePage from './SignUp/SignUpDone';
 import ForgotPass from './ForgotPassword/ForgotPassword1';
 import ChangeSuccess from './ForgotPassword/ForgotPassword3';
-import MainPage from './MainPage';
 import ChangePasswordForm from './ForgotPassword/ForgotPassword2'
-import SignUpDonePage from './SignUp/SignUpDone';
 
 const Stack = createStackNavigator();
+
 
 export default function App() {
   return (

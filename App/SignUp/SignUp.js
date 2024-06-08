@@ -16,7 +16,7 @@ export default function SignUpPage({navigation}) {
   return (
     <View style={styles.container}>
       <BackToHomeButton 
-        style={{marginTop: 60}} 
+        style={{marginTop: 50}} 
         onPress={() => navigation.navigate('HomePage')} />
       <Proskills 
         style={styles.nameLogo} 
@@ -52,13 +52,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
   },
   nameLogo:{
-    marginTop: 60,
+    marginTop: 55,
   },
   title1:{
     position: 'absolute',
-    top: 240,
+    top: 200,
     width: 234,
     height: 66,
     fontFamily: 'PlusJakartaSansMedium',
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
   },
   title2:{
     position: 'absolute',
-    top: 270,
+    top: 240,
     width: 240,
     height: 66,
     fontFamily: 'PlusJakartaSansMedium',
@@ -78,11 +82,11 @@ const styles = StyleSheet.create({
   },
   signUpEmail:{
     position: 'absolute',
-    top: 370,
+    top: 350,
   },
   description:{
     position: 'absolute',
-    top: 465,
+    top: 440,
     width: 241,
     height: 45,
     textAlign: 'center',

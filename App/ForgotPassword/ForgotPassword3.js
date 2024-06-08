@@ -13,13 +13,13 @@ export default function ChangeSuccess({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Successfully changed</Text>
+      <Text style={styles.title}>Successfully changed!</Text>
       <Text style={styles.description}>Your password has been successfully change! Please log into your account again</Text>
       <Image source={require('../../assets/checkEmail.png')} style={styles.image}/>
       
       <View style={styles.buttonField}>
         <CustomButton0 title="Log in"/>
-        <CustomButton1 title="Do it later"/>
+        <CustomButton1 title="I'll do it later"/>
       </View>
     </View>
   );
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image:{
-    marginBottom: 170,
+    marginBottom: 130,
     width: 231,
     height: 210,
     resizeMode: 'cover',
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
   },
   buttonField: {
     position: 'absolute',
-    top: 520,
+    top: 550,
   }
 });

@@ -4,7 +4,6 @@ import {useFonts} from 'expo-font';
 import {CustomTextInput, CustomSecureTextInput} from '../components/TextInput';
 import React, { useState } from 'react'
 import {BackToHomeButton, CustomButton0, CustomButton4} from '../components/Button';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { validateEmail } from '../utils/Utility'
 import {LOCALHOST, PORT} from '@env'
 
@@ -28,7 +27,7 @@ export default function SignInPage({navigation}) {
 
   const logInRequest = async (input) => {
     try {
-      const api = await `http://192.168.1.144:${PORT}/api/auth/login`;
+      const api = await `http://${LOCALHOST}:${PORT}/api/auth/login`;
       const response = await fetch(api, {
         method: 'POST',
         headers: {
@@ -41,7 +40,6 @@ export default function SignInPage({navigation}) {
       });
       const data = await response.json();
       if(response.status === 200){
-        await AsyncStorage.setItem('jwtToken', data.token);
         navigation.navigate('HomePage');
         return;
       }
@@ -62,7 +60,7 @@ export default function SignInPage({navigation}) {
   return (
     <View style={styles.container}>
       <BackToHomeButton 
-        style={{marginTop: 60}}
+        style={{marginTop: 50}}
         onPress={() => navigation.navigate('HomePage')}/>
       <Proskills style={styles.nameLogo} width={149} height={45}/>
       <Text style={styles.title}>Welcome back! Sign in to continue!</Text>
@@ -146,11 +144,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nameLogo:{
-    marginTop: 68,
+    marginTop: 55,
   },
   title:{
     position: 'absolute',
-    top: 214,
+    top: 200,
     width: 234,
     height: 66,
     fontFamily: 'PlusJakartaSansMedium',
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
   },
   inputField: {
     position: 'absolute',
-    top: 372,
+    top: 330,
     width: 335,
   },
   loginButton: {
@@ -169,7 +167,7 @@ const styles = StyleSheet.create({
   },
   fpButton: {
     position: 'absolute',
-    top: 515,
+    top: 475,
     left: 240,
   },
   createAccountText: {
