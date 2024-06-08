@@ -67,10 +67,11 @@ const Course=
     calculateRateofCourse: async(id)=>
     {
         const query='SELECT AVG(rating) FROM rating_of_course WHERE course_id = ?';
-        const query1='INSERT INTO courses (rating) VALUES (?, ?, ?, ?) where course_id=?';
+        const query1='INSERT INTO courses (rating) VALUES (?) where course_id=?';
+        const result=await db.query(query,[id]);
         try
         {
-            const result=await db.query(query,[id]);
+            
             const result1=await db.query(query1,[result[0],id]);
             return result1[0];
         }
@@ -91,6 +92,60 @@ const Course=
         {
             throw err;
         }
+    },
+    getFiveTopCoursesbyRating :async()=>
+    {
+        const query='SELECT * FROM courses ORDER BY rating DESC LIMIT 5';
+        try
+        {
+            const rows=await db.query(query);
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    getFiveTopCoursesbyEnrollments:async()=>
+    {
+        const query='SELECT course_id,COUNT(user_id) as enrollment_count FROM Enrollments GROUP BY course_id  ORDER BY enrollment_count DESC LIMIT 5';
+        const query1='SELECT * FROM courses WHERE id = ?' ;
+        try
+        {
+            const rows=await db.query(query);
+            const topCourses=[];
+            for(const row of rows)
+            {
+                const courseDetails = await db.query(query1, [row.course_id]);
+                topCourses.push(courseDetails[0]);
+            }
+            return  topCourses;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    getFiveTopCoursesByComments:async()=>
+    {
+        const query='SELECT course_id,COUNT(userId) as comment_count FROM comments_course GROUP BY course_id ORDER BY comment_count DESC LIMIT 5';
+        const query1='SELECT * FROM courses WHERE id = ?'
+        try
+        {       
+            const rows=await db.query(query);
+            const topCourses=[];
+            for(const row of rows)
+                {
+                    const courseDetails = await db.query(query1, [row.course_id]);
+                    topCourses.push(courseDetails[0]);
+                }
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
+        }
     }
+
 }
 module.exports=Course;
