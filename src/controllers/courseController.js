@@ -14,6 +14,7 @@ exports.getAllCourses = async (req, res) => {
 exports.getCourseById = async (req, res) => {
     try {
         const { id } = req.params;
+        await Course.calculateRateofCourse(id);
         const course = await Course.getById(id);
         if (!course) {
             return res.status(404).json({ message: 'Course not found' });
@@ -21,5 +22,14 @@ exports.getCourseById = async (req, res) => {
         res.status(200).json(course);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching course', error: err.message });
+    }
+};  
+exports.getAllComments = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const comments = await Course.getAllComments(id);
+        res.status(200).json(comments);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching comments', error: err.message });
     }
 };
