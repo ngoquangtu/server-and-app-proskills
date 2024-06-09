@@ -95,7 +95,7 @@ const Course=
     },
     getFiveTopCoursesbyRating :async()=>
     {
-        const query='SELECT courses.*,COUNT(enrollments.user_id) as subcribeNum FROM courses JOIN enrollments ON courses.id = enrollments.course_id GROUP BY enrollments.course_id  ORDER BY rating DESC LIMIT 5';
+        const query='SELECT Courses.*,COUNT(Enrollments.user_id) as subcribeNum FROM Courses JOIN Enrollments ON Courses.id = Enrollments.course_id GROUP BY Enrollments.course_id  ORDER BY rating DESC LIMIT 5';
         try
         {
             const rows=await db.query(query);

@@ -1,10 +1,16 @@
 
 const mysql = require('mysql2/promise');
+const fs = require('fs');
 const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER ,
-  password: process.env.DB_PASSWORD ,
-  database: process.env.DB_NAME ,
+  host: 'mysql-2ae6ddd1-proskills.e.aivencloud.com',
+  port: 16258,
+  user: 'avnadmin',
+  password: 'AVNS_UNpXU4iubxlZX4Fygqv',
+  database: 'defaultdb',
+
+  ssl: {
+    ca: fs.readFileSync('C:/Users/ngoqu/web-app-project-thay -Kien/ca.pem')
+  }
 };
 
 async function connectToDatabase() {
