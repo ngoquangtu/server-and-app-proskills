@@ -26,7 +26,7 @@ const Youtube = {
     getEmbedCode: (url) => {
         const videoId = Youtube.extractVideoId(url);
         if (videoId) {
-            return Youtube.generateEmbedCode(videoId);
+           return videoId;
         } else {
             return 'Invalid YouTube URL';
         }
@@ -37,10 +37,15 @@ const Youtube = {
             if (!url || typeof url !== 'string') {
                 throw new Error('Invalid URL');
             }
-            const regExp = /^.*(youtu\.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|&v=|youtu\.be\/|\/v\/|\/embed\/|watch\?v=|\/?v=|\/v\/)([^#&?]*).*/;
+            // const regExp = /^.*(youtu\.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|&v=|youtu\.be\/|\/v\/|\/embed\/|watch\?v=|\/?v=|\/v\/)([^#&?]*).*/;
+         
+            // if (match && match[2]) {
+            //     return (match[2].length === 11) ? match[2] : null;
+            // const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const regExp = /([a-zA-Z0-9_-]{11})/;
             const match = url.match(regExp);
-            if (match && match[2]) {
-                return (match[2].length === 11) ? match[2] : null;
+            if (match && match[0]) {
+                return match ? match[0] : null;
             } else {
                 throw new Error('Invalid URL');
             }
@@ -48,7 +53,6 @@ const Youtube = {
             throw err;
         }
     },
-
     generateEmbedCode: (videoId) => {
         return `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     }
