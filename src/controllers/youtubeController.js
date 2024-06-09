@@ -13,12 +13,19 @@ exports.searchYoutube=async(req,res)=>
 };
 exports.getEmbededCode=async (req,res)=>
 {
-    const url = req.body;
+    const {url }= req.body;
     const embedCode = Youtube.getEmbedCode(url);
 
-    if (embedCode === 'Invalid YouTube URL') {
-        res.status(400).send(embedCode);
-    
-    } 
-    res.json(embedCode);
+    try
+    {
+        if(embedCode === 'Invalid YouTube URL')
+        {
+            res.status(400).send(embedCode);
+        }
+        res.json(embedCode);
+    }   
+    catch(error)  
+    {
+        res.status(500).send('Error getting embed code');    
+    }
 }
