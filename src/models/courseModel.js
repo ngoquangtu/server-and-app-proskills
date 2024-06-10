@@ -66,13 +66,13 @@ const Course=
     },
     calculateRateofCourse: async(id)=>
     {
-        const query='SELECT AVG(rating) FROM rating_of_course WHERE course_id = ?';
-        const query1='INSERT INTO courses (rating) VALUES (?) where course_id=?';
-        const result=await db.query(query,[id]);
+        const query='SELECT AVG(rating)  AS average_rating FROM rating_of_course GROUP BY course_id = ?';
+        const query1='UPDATE courses SET rating= ?  WHERE  id=?';
+        
         try
         {
-            
-            const result1=await db.query(query1,[result[0],id]);
+            const result=await db.query(query,[id]);
+            const result1=await db.query(query1,[result[0]['AVG(rating)'],id]);
             return result1[0];
         }
         catch(err)
