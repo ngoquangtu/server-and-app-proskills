@@ -64,20 +64,23 @@ const Course=
             throw err;
         }
     },
-    calculateRateofCourse: async(id)=>
-    {
-        const query='SELECT AVG(rating)  AS average_rating FROM rating_of_course GROUP BY course_id = ?';
-        const query1='UPDATE courses SET rating= ?  WHERE  id=?';
+    calculateRateofCourse: async (id) => {
+        const query = 'SELECT AVG(rating) AS average_rating FROM rating_of_course WHERE course_id = ?';
+        const query1 = 'UPDATE courses SET rating = ? WHERE id = ?';
         
-        try
-        {
-            const result=await db.query(query,[id]);
-            const result1=await db.query(query1,[result[0]['AVG(rating)'],id]);
-            return result1[0];
-        }
-        catch(err)
-        {
-            throw err;
+        try {
+            const result = await db.query(query, [id]);
+            console.log(result[0]);
+            const averageRating = result.length > 0 ? result[0].average_rating: null;
+            
+            if (averageRating !== null) {
+                await db.query(query1, [averageRating, id]);
+                return { success: true, message: 'Course rating updated successfully' };
+            } else {
+                return { success: false, message: 'No ratings found for this course' };
+            }
+        } catch (error) {
+            throw error;
         }
     },
     getAllCommentofCourse:async(id)=>
