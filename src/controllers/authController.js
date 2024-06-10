@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
         res.status(200).json({type: Status.SUCCESS, message: 'User registered successfully' }); // 201 Created
     } catch (err) {
         console.error('Error during registration:', err);
-        res.status(500).json({type: Status.SUCCESS, message: 'Error while registering', error: err.message }); // 500 Internal Server Error
+        res.status(500).json({ message: 'Error while registering', error: err.message }); 
     }
 };
 
@@ -27,21 +27,20 @@ exports.login = async (req, res) => {
         const user = await User.findEmail(email);
         const userInfo = await User.findInforUser(email);
         if (!user) {
-            return res.status(404).json({ message: 'Email does not exist. Please try again!' }); // 404 Not Found
+            return res.status(404).json({type:Status.INVALID_EMAIL, message: 'Email does not exist. Please try again!' }); // 404 Not Found
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Email or password is wrong!' }); // 401 Unauthorized
+            return res.status(401).json({ type:Status.INVALID_PASSWORD,message: 'Email or password is wrong!' }); // 401 Unauthorized
         }
-        
         const token = jwt.sign(
             { userId: user.id, username: user.username, role: user.role, isPopup: false },
             process.env.SECRET_KEY,
             { expiresIn: '360s' }
         );
         res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-        res.status(200).json({ token, userInfo }); // 200 OK
+        res.status(200).json({type:Status.SUCCESS, token, userInfo }); // 200 OK
     } catch (err) {
         console.error('Error during authentication:', err);
         res.status(500).json({ message: 'Error during authentication', error: err.message }); // 500 Internal Server Error
