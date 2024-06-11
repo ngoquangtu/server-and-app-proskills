@@ -75,9 +75,6 @@ const Course=
             
             if (averageRating !== null) {
                 await db.query(query1, [averageRating, id]);
-                return { success: true, message: 'Course rating updated successfully' };
-            } else {
-                return { success: false, message: 'No ratings found for this course' };
             }
         } catch (error) {
             throw error;
