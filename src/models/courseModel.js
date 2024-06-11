@@ -71,7 +71,7 @@ const Course=
         try {
             const result = await db.query(query, [id]);
             console.log(result[0]);
-            const averageRating = result.length > 0 ? result[0].average_rating: null;
+            const averageRating = result.length > 0 ? result[0].average_rating: 0;
             
             if (averageRating !== null) {
                 await db.query(query1, [averageRating, id]);
