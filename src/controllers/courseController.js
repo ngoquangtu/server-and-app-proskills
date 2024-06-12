@@ -82,3 +82,16 @@ exports.getAllCourseEnrollmentsOfUsers = async (req, res) => {
         res.status(500).json({ message: 'Error fetching enrollments', error: err.message });
     }
 }
+exports.getAllVideoByCourse= async(req,res)=>
+{
+    try
+    {
+        const {id}=req.params;
+        const videos=await Course.getAllVideoByCourse(id);
+        res.status(200).json(videos);
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error get video by course',error:err.message});
+    }
+}

@@ -1,3 +1,4 @@
+const { getAllVideoByCourse } = require('../controllers/courseController.js');
 const db=require('../public/db.js');
 
 const Course=
@@ -173,11 +174,24 @@ const Course=
     },
     getNumberVideoOfCourse:async(id)=>
     {
-        const query='SELECT COUNT(*) as countVideo FROM videos WHERE course_id = ?';
+        const query='SELECT COUNT(*) as countVideo FROM video WHERE course_id = ?';
         try
         {
             const rows=await db.query(query,[id]);
             return rows[0].countVideo;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    getAllVideoByCourse:async(id)=>
+    {
+        const query='SELECT * FROM video WHERE course_id = ?';
+        try
+        {
+            const rows=await db.query(query,[id]);
+            return rows;
         }
         catch(err)
         {
