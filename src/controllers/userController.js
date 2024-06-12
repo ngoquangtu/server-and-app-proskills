@@ -1,7 +1,5 @@
 
 const User = require('../models/userModel');
-
-
 exports.getUserInfor=async (req,res)=>
 {
     try
@@ -56,16 +54,11 @@ exports.uploadAvatar=async(req,res)=>
         if (!req.file) {
             return res.status(400).send('No file selected');
           }
-        const allowedFormats = ['image/png', 'image/jpeg'];
-        if (!allowedFormats.includes(req.file.mimetype)) {
-            return res.status(400).send('Invalid file format. Only PNG and JPEG are allowed.');
-        }
-        const image = {
-            data: fs.readFileSync(req.file.path),
-            name: req.file.originalname,
-        };
-       await User.uploadAvatar(image,userId);
-        res.status(201).send({ message: 'Image uploaded successfully' });
+          const result = await User.uploadAvatar(req.file, userId);
+          if (!result) {
+              return res.status(500).json({ message: 'Error uploading avatar' });
+          }
+          res.status(201).json({ avatarUrl: result, message: 'Image uploaded successfully' });
     }
     catch(err)
     {

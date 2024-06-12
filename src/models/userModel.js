@@ -1,4 +1,5 @@
 const db = require('../public/db');
+const dbfirebase=require('../public/dbfirebase');
 const bcrypt = require('bcrypt');
 const nodemailer=require('nodemailer');
 const fs=require('fs');
@@ -151,9 +152,14 @@ const User = {
     {
        try
        {
-            const query='UPDATE users set avatar_url=? WHERE id=?';
-            const rows=await db.query(query,[img,id]);
-            return rows;
+            const avatarUrl = await dbfirebase.uploadAvatar(img);
+
+            if (avatarUrl) {
+                const query = 'UPDATE users set avatar_url=? WHERE id=?';
+                await db.query(query, [avatarUrl, id]);
+                return avatarUrl;
+            }
+            return null;
        }
        catch(err)
        {
