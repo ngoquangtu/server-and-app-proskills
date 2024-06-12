@@ -15,11 +15,13 @@ exports.getCourseById = async (req, res) => {
     try {
         const { id } = req.params;
         await Course.calculateRateofCourse(id);
+        const numberofUserRating=await Course.getNumberUserofRatingCourses(id);
+        const numberofVideo=await Course.getNumberVideoOfCourse(id);
         const course = await Course.getById(id);
         if (!course) {
             return res.status(404).json({ message: 'Course not found' });
         }
-        res.status(200).json(course);
+        res.status(200).json({course,numberofRating:numberofUserRating,numberofVideo:numberofVideo});
     } catch (err) {
         res.status(500).json({ message: 'Error fetching course', error: err.message });
     }

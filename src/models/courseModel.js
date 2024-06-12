@@ -158,6 +158,32 @@ const Course=
             throw err;
         }
     },
+    getNumberUserofRatingCourses:async(id)=>
+    {
+        const query='SELECT COUNT(*) as countRating FROM rating_of_course WHERE course_id = ?';
+        try
+        {
+            const rows=await db.query(query,[id]);
+            return rows[0].countRating;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    getNumberVideoOfCourse:async(id)=>
+    {
+        const query='SELECT COUNT(*) as countVideo FROM videos WHERE course_id = ?';
+        try
+        {
+            const rows=await db.query(query,[id]);
+            return rows[0].countVideo;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    }
     
 
 }
