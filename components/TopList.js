@@ -2,12 +2,12 @@ import { StyleSheet, FlatList, View } from 'react-native'
 import React from 'react'
 import TopListItem from './TopListItem'
 
-const TopList = (items) => {
-    const itemData = items.items;
+const TopList = ({items, style, navigation}) => {
+    const itemData = {items}.items;
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <FlatList data={itemData}
-        renderItem={({item}) => <TopListItem item={item}/>}
+        renderItem={({item}) => <TopListItem item={item} navigation={navigation}/>}
         keyExtractor={item => item.id}
         horizontal
       />
@@ -20,6 +20,5 @@ export default TopList
 const styles = StyleSheet.create({
   container:{
     marginTop: 12,
-    marginLeft: 15,
   }
 })

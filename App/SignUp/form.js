@@ -34,7 +34,7 @@ export default function SignUpForm({navigation}) {
   const sendRegisterRequest = async (input) => {
     try {
       const api = await `http://${LOCALHOST}:${PORT}/api/auth/register`;
-      console.log(api);
+      
       const response = await fetch(api, {
         method: 'POST',
         headers: {
@@ -47,7 +47,7 @@ export default function SignUpForm({navigation}) {
         }),
       });
 
-      if(response.status === 201){
+      if(response.status === 200){
         navigation.navigate('SignUpDone');
         return;
       }

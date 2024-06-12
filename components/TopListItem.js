@@ -3,7 +3,7 @@ import React from 'react'
 import { Rating } from 'react-native-ratings';
 import { useFonts } from 'expo-font';
 
-const TopListItem = ({item}) => {
+const TopListItem = ({item, navigation}) => {
     const [loaded] = useFonts({
       PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
       PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -12,10 +12,13 @@ const TopListItem = ({item}) => {
       return null;
     }
 
-
-  
     return (
-      <TouchableOpacity style={styles.container} activeOpacity={0.8}>
+      <TouchableOpacity 
+        style={styles.container} 
+        activeOpacity={0.8}
+        onPress={() => {
+          navigation.navigate("CourseInfo", {courseId: item.id});
+        }}>
         <Image source={item.thumbnail} style={styles.thumbnail}/>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.author}>{item.publisher}</Text>
@@ -29,7 +32,7 @@ const TopListItem = ({item}) => {
                 style={styles.rating}
                 imageSize={16}
             />
-            <Text style={styles.subNum}>(1)</Text>
+            <Text style={styles.subNum}>({item.subcribeNum})</Text>
         </View>
       </TouchableOpacity>
     )
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
   container:{
     width: 180,
     height: 216,
-    marginRight: 22,
+    marginLeft: 10,
   },
   thumbnail:{
     width: '100%',

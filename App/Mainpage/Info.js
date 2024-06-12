@@ -1,37 +1,54 @@
 import { StyleSheet, SafeAreaView, ScrollView, Image, StatusBar } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CustomButton1, FloatingLoginButton } from '../../components/Button'
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../../utils/Context';
 
 const Info = ({navigation}) => {
   const [image, setImage] = useState(null);
+  const context = useContext(AuthContext);
 
   const pickImage = async () =>{
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
 
-
-    if (!result.canceled) {
-      console.log(result.assets[0].uri);
-      setImage(result.assets[0].uri);
+    if (!result.cancelled) {
+      const base64 = await FileSystem.readAsStringAsync(result.uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      setImage(base64);
+      console.log(base64);
     }
   }
+
+  const logoutRequest = async () => {
+    await AsyncStorage.removeItem('JWT');
+  };
 
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="#12B7BD"/>
       <ScrollView style={styles.scrollView}>
-        <CustomButton1 title={"Upload"} 
-        onPress={ () => {
-          pickImage();
-        }}></CustomButton1>
+        <CustomButton1 
+          title={"Upload"} 
+          onPress={ () => {
+            pickImage();
+          }}></CustomButton1>
+        <CustomButton1 
+          title={"Logout"}
+          onPress={() => {
+            context.logout();
+            logoutRequest();
+            navigation.navigate("Onboarding");
+          }}></CustomButton1>
         <Image source={{uri: image}} style={styles.img}></Image>
       </ScrollView>
-      <FloatingLoginButton title={"Log in / Sign up"} navigation={navigation}/>
+      {context.isLogin ?<></> : <FloatingLoginButton title={"Log in / Sign up"} navigation={navigation}/>}
       
     </SafeAreaView>
   )

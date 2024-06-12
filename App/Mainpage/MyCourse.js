@@ -1,14 +1,16 @@
-import { StyleSheet, SafeAreaView, ScrollView, Image, StatusBar } from 'react-native'
-import React from 'react'
+import { StyleSheet, SafeAreaView, ScrollView, StatusBar } from 'react-native'
+import React, { useContext } from 'react'
 import { FloatingLoginButton } from '../../components/Button'
+import { AuthContext } from '../../utils/Context'
 
 const MyCourse = ({navigation}) => {
+  const context = useContext(AuthContext)
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="#12B7BD"/>
       <ScrollView style={styles.scrollView}>
       </ScrollView>
-      <FloatingLoginButton title={"Log in / Sign up"} navigation={navigation}/>
+      {context.isLogin ?<></> : <FloatingLoginButton title={"Log in / Sign up"} navigation={navigation}/>}
       
     </SafeAreaView>
   )

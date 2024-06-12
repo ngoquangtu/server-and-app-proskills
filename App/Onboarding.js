@@ -5,6 +5,7 @@ import {CustomButton0, CustomButton1, CustomButton2} from '../components/Button'
 import Carousel from '../components/Carousel';
 
 export default function OnboardingPage({navigation}) {
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#12B7BD"/>

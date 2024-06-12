@@ -30,7 +30,7 @@ const CustomButton1 = ({title, style, onPress}) => {
     
     return (
         <TouchableOpacity onPress={onPress} style={[styles.buttonLargeLayout, styles.buttonCenter, styles.buttonBackgroundWhite, {borderWidth: 1, borderRadius: 6}, style]}>
-            <Text style={ [styles.buttonText, styles.buttonColorGreen]}>{title}</Text>
+            <Text style={[styles.buttonText, styles.buttonColorGreen]}>{title}</Text>
         </TouchableOpacity>
     );
 };
@@ -101,7 +101,6 @@ const BackToHomeButton = ({style, onPress}) => {
 }
 
 const FloatingLoginButton = ({title, style, onPress, navigation}) => {
-    
     const [loaded] = useFonts({
         PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
         PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -109,7 +108,7 @@ const FloatingLoginButton = ({title, style, onPress, navigation}) => {
     if(!loaded){
         return null;
     }
-    
+
     return (
         <TouchableOpacity 
             onPress={() => {

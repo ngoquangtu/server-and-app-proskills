@@ -2,19 +2,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import Proskills from '../assets/Proskills.svg';
 import {useFonts} from 'expo-font';
 import {CustomTextInput, CustomSecureTextInput} from '../components/TextInput';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {BackToHomeButton, CustomButton0, CustomButton4} from '../components/Button';
 import { validateEmail } from '../utils/Utility'
 import {LOCALHOST, PORT} from '@env'
+import { AuthContext } from '../utils/Context';
 
 export default function SignInPage({navigation}) {
-  const [loaded] = useFonts({
-    PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
-  })
-  if(!loaded){
-    return null;
-  }
-
+  const context = useContext(AuthContext)
   const [inputErrors, setInputErrors] = useState({
     email: '',
     password: '',
@@ -40,6 +35,7 @@ export default function SignInPage({navigation}) {
       });
       const data = await response.json();
       if(response.status === 200){
+        context.login(data.token);
         navigation.navigate('HomePage');
         return;
       }
@@ -151,7 +147,6 @@ const styles = StyleSheet.create({
     top: 200,
     width: 234,
     height: 66,
-    fontFamily: 'PlusJakartaSansMedium',
     fontSize: 26,
     textAlign:'center',
     fontWeight:'bold',
@@ -171,7 +166,6 @@ const styles = StyleSheet.create({
     left: 240,
   },
   createAccountText: {
-    fontFamily: 'PlusJakartaSans',
     fontSize: 14,
     fontWeight: 'medium',
     marginTop: 5,

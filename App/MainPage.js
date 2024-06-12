@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainPage() {
+export default function MainPage({navigation}) {
   
   return (
     <Tab.Navigator 
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     color: '#70747E',
   },
   loginButton:{
-    width: '100%',
     height: 60,
+    width: '100%',
     borderRadius: 0,
   }
 })
