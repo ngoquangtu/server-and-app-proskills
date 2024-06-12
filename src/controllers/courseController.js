@@ -72,7 +72,8 @@ exports.gellAllCourseByEnrollments= async(req,res)=>
 exports.getAllCourseEnrollmentsOfUsers = async (req, res) => {
     try {
         // const { id } = req.params;
-        const {id}=req.user?.userId;
+        const id=req.user?.userId;
+        
         const enrollments = await Course.getAllCourseByEnrollments(id);
         res.status(200).json(enrollments);
     } catch (err) {

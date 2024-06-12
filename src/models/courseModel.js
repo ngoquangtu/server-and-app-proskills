@@ -147,7 +147,7 @@ const Course=
     },
     getAllCourseByEnrollments:async(id)=>
     {
-        const query='SELECT courses.* FROM courses LEFT JOIN enrollments ON courses.id=enrollments.course_id WHERE enrollments.user_id = ?'
+        const query='SELECT courses.* FROM courses JOIN enrollments ON courses.id=enrollments.course_id WHERE enrollments.user_id = ?'
         try
         {
             const rows=await db.query(query,[id]);
