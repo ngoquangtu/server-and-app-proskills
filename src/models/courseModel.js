@@ -70,7 +70,6 @@ const Course=
         
         try {
             const result = await db.query(query, [id]);
-            console.log(result[0]);
             const averageRating = result.length > 0 ? result[0].average_rating: 0;
             
             if (averageRating !== null) {
@@ -145,7 +144,21 @@ const Course=
         {
             throw err;
         }
-    }
+    },
+    getAllCourseByEnrollments:async(id)=>
+    {
+        const query='SELECT courses.* FROM courses LEFT JOIN enrollments ON courses.id=enrollments.course_id WHERE enrollments.user_id = ?'
+        try
+        {
+            const rows=await db.query(query,[id]);
+            return rows;
+        }
+        catch(err)
+        { 
+            throw err;
+        }
+    },
+    
 
 }
 module.exports=Course;

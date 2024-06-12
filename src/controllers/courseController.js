@@ -69,3 +69,13 @@ exports.gellAllCourseByEnrollments= async(req,res)=>
         res.status(500).json({message:'Error get course by enrollments',error:err.message});
     }
 }
+exports.getAllCourseEnrollmentsOfUsers = async (req, res) => {
+    try {
+        // const { id } = req.params;
+        const {id}=req.user?.userId;
+        const enrollments = await Course.getAllCourseByEnrollments(id);
+        res.status(200).json(enrollments);
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching enrollments', error: err.message });
+    }
+}

@@ -9,4 +9,5 @@ router.get('/comment/:id',courseController.getAllComments);
 router.post('/mostrating',courseController.getAllCourseByRating);
 router.post('/mostcomment',courseController.gellAllCourseByComment);
 router.post('/mostenrollment',courseController.gellAllCourseByEnrollments);
+router.post('/enrollments',verifyToken,courseController.getAllCourseEnrollmentsOfUsers);
 module.exports = router;
