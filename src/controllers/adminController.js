@@ -6,7 +6,7 @@ exports.createCourse = async (req, res) => {
     const { title, description, content } = req.body;
 
     try {
-        const newCourse = await Course.create({ title, description, content, createdBy: req.userId });
+        const newCourse = await Course.create({ title, description, content, thumbnail: req.file.path });
         res.status(201).json({ message: 'Course created successfully', course: newCourse });
     } catch (err) {
         console.error('Error creating course:', err);

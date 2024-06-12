@@ -4,8 +4,8 @@ const Course=
 {
     create: async (course) => {
         const { title, description, content } = course;
-        const query = 'INSERT INTO courses (title, description, content) VALUES (?, ?, ?)';
-        const values = [title, description, content];
+        const query = 'INSERT INTO courses (title, description, content,thumbnail) VALUES (?, ?, ?,?)';
+        const values = [title, description, content,thumbnail];
         try {
             const result = await db.query(query, values);
             return result;
