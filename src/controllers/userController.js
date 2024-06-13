@@ -84,7 +84,7 @@ exports.writeFeedback=async(req,res)=>
     {
         const {feedback}=req.body;
         const {userId}=req.user?.userId;
-        const rows=await User.feedBack(feedback,userId);
+        const rows=await User.feedBack(feedback,1);
         res.status(200).send(rows); 
     }
     catch(err)
