@@ -1,6 +1,9 @@
 
 const mysql = require('mysql2/promise');
 const fs = require('fs');
+const path = require('path');
+
+const caPath = path.join(__dirname, 'ca.pem');
 const dbConfig = {
   host: 'mysql-2ae6ddd1-proskills.e.aivencloud.com',
   port: 16258,
@@ -9,7 +12,7 @@ const dbConfig = {
   database: 'defaultdb',
 
   ssl: {
-    ca: fs.readFileSync('C:/Users/ngoqu/web-app-project-thay -Kien/ca.pem')
+    ca: fs.readFileSync(caPath)
   }
   // host: 'localhost',
   // port: 3306,

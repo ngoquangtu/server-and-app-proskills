@@ -1,4 +1,3 @@
-const { getAllVideoByCourse } = require('../controllers/courseController.js');
 const db=require('../public/db.js');
 
 const Course=
