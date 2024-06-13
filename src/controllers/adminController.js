@@ -13,6 +13,19 @@ exports.createCourse = async (req, res) => {
         res.status(500).json({ message: 'Failed to create course' });
     }
 };
+exports.insertVideoByCourse=async (req,res)=>
+{
+    const {id,courseId,title,description,link}=req.body;
+    try
+    {
+        const result=await Course.insertVideoByCourse(id,courseId,title,description,link);
+        res.status(200).json(result);
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error insert video by course',error:err.message});
+    }
+}
 exports.deleteComment = async (req, res) => {
     const { commentId } = req.body;
 

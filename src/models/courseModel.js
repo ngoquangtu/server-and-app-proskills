@@ -13,6 +13,20 @@ const Course=
             throw err;
         }
     },
+    insertVideo:async(id,course_id,title,description,link)=>
+    {
+        const query='INSERT INTO video(id,course_id,title,description,link) VALUES(?,?,?,?)';
+        const values=[id,course_id,title,description,link];
+        try
+        {
+            const result=await db.query(query,values);
+            return result;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
     getAll: async () => {
         const query = 'SELECT * FROM courses';
 
