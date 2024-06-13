@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
     try {
         const userByEmail = await User.findEmail(email);
         if (userByEmail) {
-            return res.status(200).json({type: Status.INVALID_EMAIL, message: 'Email already exists, try again!!!' }); // 409 Conflict
+            return res.status(200).json({type: Status.INVALID_EMAIL, message: 'Email already exists, try again!!!' });
         }
         await User.createInfo({ username, email, password });
         res.status(200).json({type: Status.SUCCESS, message: 'User registered successfully' }); // 201 Created
@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
         res.status(200).json({type:Status.SUCCESS, token, userInfo }); // 200 OK
     } catch (err) {
         console.error('Error during authentication:', err);
-        res.status(500).json({ message: 'Error during authentication', error: err.message }); // 500 Internal Server Error
+        res.status(500).json({ message: 'Error during authentication', error: err.message }); 
     }
 };
 

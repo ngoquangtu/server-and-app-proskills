@@ -9,5 +9,6 @@ router.post('/views',userController.views);
 router.post('/search-courses',userController.searchCourse);
 router.post('/uploadavatar',verifyToken,upload.single('avatar'),userController.uploadAvatar);
 router.post('/getavatar',verifyToken,userController.getAvatar);
+router.post('/feedback',verifyToken,userController.writeFeedback);
 module.exports=router;
 

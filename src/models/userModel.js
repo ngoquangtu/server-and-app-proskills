@@ -2,7 +2,7 @@ const db = require('../public/db');
 const dbfirebase=require('../public/dbfirebase');
 const bcrypt = require('bcrypt');
 const nodemailer=require('nodemailer');
-const fs=require('fs');
+const fs=require('fs').promises;
 const path = require('path');
 
 
@@ -177,6 +177,31 @@ const User = {
         catch(err)
         {
              throw err;
+        }
+    },
+    feedBack :async ( comment,id) => {
+        try
+        {
+            const query = 'INSERT INTO feedback (feedback) VALUES (?) WHERE userId=?';
+            const rows = await db.query(query, [comment,id]);
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    readFeedback: async()=>
+    {
+        try
+        {
+            const query='SELECT feedback.feedback,users.username,users.avatar_url FROM feedback LEFT JOIN users ON feedback.userId = users.id';
+            const rows=await db.query(query);
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
         }
     }
 };

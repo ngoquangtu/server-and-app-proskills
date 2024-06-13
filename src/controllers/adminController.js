@@ -86,3 +86,15 @@ exports.stats=async(req,res)=>
         res.status(500).json({message:'Error view stats'});
     }
 }
+exports.readFeedback=async(req,res)=>
+{
+    try
+    {
+        const fb=await User.readFeedback();
+        res.status(200).json(fb);
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error read feedback'});
+    }
+}

@@ -11,6 +11,7 @@ router.get('/allusers',[verifyToken ,isAdmin],adminController.getAllUsers);
 router.get('/update-course',[verifyToken ,isAdmin],adminController.updateCourses);
 router.delete('/delete-course',[verifyToken ,isAdmin],adminController.deleteCourse);
 router.get('/stats',[verifyToken ,isAdmin],adminController.stats);
+router.get('/feedback',[verifyToken ,isAdmin],adminController.readFeedback);
 
 
 module.exports=router;

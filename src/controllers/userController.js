@@ -78,3 +78,17 @@ exports.getAvatar = async (req, res) => {
         res.status(500).json({ message: 'Error fetching avatar', error: err.message });
     }
 };
+exports.writeFeedback=async(req,res)=>
+{
+    try
+    {
+        const {feedback}=req.body;
+        const {userId}=req.user?.userId;
+        const rows=await User.feedBack(feedback,userId);
+        res.status(200).send(rows); 
+    }
+    catch(err)
+    {
+        res.status(500).json({ message: 'Error feedback ', error: err.message });
+    }
+}
