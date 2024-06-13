@@ -2,20 +2,20 @@
 const mysql = require('mysql2/promise');
 const fs = require('fs');
 const dbConfig = {
-  // host: 'mysql-2ae6ddd1-proskills.e.aivencloud.com',
-  // port: 16258,
-  // user: 'avnadmin',
-  // password: 'AVNS_UNpXU4iubxlZX4Fygqv',
-  // database: 'defaultdb',
+  host: 'mysql-2ae6ddd1-proskills.e.aivencloud.com',
+  port: 16258,
+  user: 'avnadmin',
+  password: 'AVNS_UNpXU4iubxlZX4Fygqv',
+  database: 'defaultdb',
 
-  // ssl: {
-  //   ca: fs.readFileSync('C:/Users/ngoqu/web-app-project-thay -Kien/ca.pem')
-  // }
-  host: 'localhost',
-  port: 3306,
-  user:'root',
-  password:'root',
-  database:'webdatabase',
+  ssl: {
+    ca: fs.readFileSync('C:/Users/ngoqu/web-app-project-thay -Kien/ca.pem')
+  }
+  // host: 'localhost',
+  // port: 3306,
+  // user:'root',
+  // password:'root',
+  // database:'webdatabase',
 };
 
 async function connectToDatabase() {
