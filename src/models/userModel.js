@@ -179,11 +179,11 @@ const User = {
              throw err;
         }
     },
-    feedBack :async ( comment,id) => {
+    feedBack :async ( feedback,userId) => {
         try
         {
-            const query = 'INSERT INTO feedback (feedback) VALUES (?) WHERE userId=?';
-            const rows = await db.query(query, [comment,id]);
+            const query = 'INSERT INTO feedback (feedback,userId) VALUES (?,?) ';
+            const rows = await db.query(query, [feedback,userId]);
             return rows;
         }
         catch(err)
