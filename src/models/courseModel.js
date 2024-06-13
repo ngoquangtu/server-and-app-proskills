@@ -196,6 +196,20 @@ const Course=
         {
             throw err;
         }
+    },
+    enrollCourseById:async(course_id,user_id)=>
+    {
+
+        const query='INSERT INTO enrollments(course_id,user_id) VALUES(?,?)';
+        try
+        {
+            const rows=await db.query(query,[course_id,user_id]);
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
+        }
     }
     
 

@@ -95,3 +95,17 @@ exports.getAllVideoByCourse= async(req,res)=>
         res.status(500).json({message:'Error get video by course',error:err.message});
     }
 }
+exports.enrolllCourse= async(req,res)=>
+{
+    try
+    {
+        const {id}=req.user?.userId;
+        const {courseId}=req.params;
+        const result=await Course.enrollCourseById(id,courseId);
+        res.status(200).json(result);
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error enroll course',error:err.message});
+    }
+}
