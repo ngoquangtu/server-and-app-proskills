@@ -112,8 +112,8 @@ const User = {
     {
         try
         {
-            const query='SELECT * FROM Courses WHERE title LIKE ?';
-            const rows= await db.query(query,[`%${title}%`]);
+            const query = 'SELECT * FROM Courses WHERE title LIKE ?';
+            const rows = await db.query(query, [`%${title}%`]);
             return rows;
         }
         catch(err)

@@ -32,7 +32,7 @@ exports.searchCourse=async(req,res)=>
     {
         try
         {
-            const title=req.body;
+            const {title}=req.body;
             const courses=await User.searchCourse(title);
             if (!courses) {
                 return res.status(404).json({ message: 'Courses not found' });
