@@ -10,7 +10,7 @@ import {LOCALHOST, PORT} from '@env';
 import { AuthContext } from '../../utils/Context';
 
 const Home = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [topListData, setTopListData] = useState({
     mostPopularList: [],
     mostRatingList: [],
@@ -20,23 +20,36 @@ const Home = ({navigation}) => {
 
   useEffect(() =>{
     setIsLoading(true);
-    const getTopList = async () => {
+    let result = {};
+    const getTopRatingList = async () => {
       try {
-        const api0 = await `http://${LOCALHOST}:${PORT}/api/courses/mostrating`;
-        const api1 = await `http://${LOCALHOST}:${PORT}/api/courses/mostenrollment`;
-        const api2 = await `http://${LOCALHOST}:${PORT}/api/courses/mostcomment`;
-        const response0 = await fetch(api0, {
+        const api = await `http://${LOCALHOST}:${PORT}/api/courses/mostrating`;
+        const response = await fetch(api, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
         });
+
+        if(response.status === 200){
+          const mostRatingList = await response.json();
+          result.mostRatingList = mostRatingList;
+        }
+
+        const api1 = await `http://${LOCALHOST}:${PORT}/api/courses/mostenrollment`;
         const response1 = await fetch(api1, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
         });
+
+        if(response1.status === 200){
+          const mostPopularList = await response1.json();
+          result.mostPopularList = mostPopularList;
+        }
+
+        const api2 = await `http://${LOCALHOST}:${PORT}/api/courses/mostenrollment`;
         const response2 = await fetch(api2, {
           method: 'POST',
           headers: {
@@ -44,38 +57,25 @@ const Home = ({navigation}) => {
           },
         });
 
-
-        if(response0.status === 200){
-          const mostRatingList = await response0.json();
-          setTopListData({...topListData, mostRatingList: mostRatingList} )
-          return;
-        }
-
-        if(response1.status === 200){
-          const mostPopularList = await response1.json();
-          setTopListData({...topListData, mostPopularList: mostPopularList} )
-          return;
-        }
-
         if(response2.status === 200){
           const mostCommentList = await response2.json();
-          setTopListData({...topListData, mostCommentList: mostCommentList} )
-          return;
+          result.mostCommentList = mostCommentList;
         }
+
+        setTopListData(prev => prev = result);
 
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       }
     }
 
-    getTopList();
+    getTopRatingList();
     setIsLoading(false);
-  });
+  }, []);
 
   return (
     isLoading? <LoadingPage></LoadingPage> :
     <SafeAreaView>
-      <StatusBar backgroundColor="#12B7BD"/>
       <ScrollView style={[styles.scrollView, {backgroundColor: '#fff'}, context.isLogin ? {} : { marginBottom: 60}]}>
         <Image source={require('../../assets/homeBanner.png')} style={styles.image}/>
         <View style={{ marginTop: 10,}}>
@@ -90,7 +90,7 @@ const Home = ({navigation}) => {
 
           <Text style={styles.title}>Top Rating Courses of <Text style={styles.textHighlight2}>Month</Text></Text>
           <TopList 
-            items={topListData.mostRatingList}
+            items={topListData.mostPopularList}
             navigation={navigation}/>
 
           <View style={styles.suggestionField}>
@@ -110,7 +110,7 @@ const Home = ({navigation}) => {
           
           <Text style={styles.title}><Text style={styles.textHighlight2}>Most Comments </Text>Courses</Text>
           <TopList 
-            items={topListData.mostRatingList} 
+            items={topListData.mostCommentList} 
             style={{marginBottom: 20}}
             navigation={navigation}/>
         </View>

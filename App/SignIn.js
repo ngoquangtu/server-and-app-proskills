@@ -35,8 +35,13 @@ export default function SignInPage({navigation}) {
       });
       const data = await response.json();
       if(response.status === 200){
-        context.login(data.token);
-        navigation.navigate('HomePage');
+        if(data.userInfo.role === 'user'){
+          context.login(data.token, data.userInfo);
+          navigation.navigate('HomePage');
+        }
+        else{
+          setInputErrors({...inputErrors, email: 'This application does not support for admin'});
+        }
         return;
       }
       if(response.status === 404){

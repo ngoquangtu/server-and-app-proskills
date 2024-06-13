@@ -1,4 +1,4 @@
-import { StyleSheet, View, StatusBar} from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import Proskills from '../assets/Proskills.svg';
 import CarouselData from '../components/CarouselData';
 import {CustomButton0, CustomButton1, CustomButton2} from '../components/Button';
@@ -8,7 +8,6 @@ export default function OnboardingPage({navigation}) {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#12B7BD"/>
       <Proskills style={styles.nameLogo} width={116} height={35}/>
       <Carousel items={CarouselData}/>
 

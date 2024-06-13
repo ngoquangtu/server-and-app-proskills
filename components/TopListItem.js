@@ -19,7 +19,7 @@ const TopListItem = ({item, navigation}) => {
         onPress={() => {
           navigation.navigate("CourseInfo", {courseId: item.id});
         }}>
-        <Image source={item.thumbnail} style={styles.thumbnail}/>
+        <Image source={{uri: item.thumbnail}} style={styles.thumbnail}/>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.author}>{item.publisher}</Text>
         <View style={styles.ratingContainer}>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   thumbnail:{
     width: '100%',
     height: 120,
-    resizeMode: 'contain',
+    resizeMode: 'stretch',
     borderColor: '#000',
     borderWidth: 1,
     borderRadius: 10,

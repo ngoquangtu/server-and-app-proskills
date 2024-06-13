@@ -5,13 +5,6 @@ import { useFonts } from 'expo-font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const CustomTextInput = ({placeHolder, warningText, style, onChangeText, onBlur}) => {
-    const [loaded] = useFonts({
-        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
-        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
-    })
-    if(!loaded){
-    return null;
-    }
 
     return <View style={[style, {marginTop: 10}]}>
         <TextInput style={styles.input}
@@ -24,13 +17,6 @@ const CustomTextInput = ({placeHolder, warningText, style, onChangeText, onBlur}
 };
 
 const CustomSecureTextInput = ({placeHolder, warningText, style, onChangeText, onBlur}) => {
-    const [loaded] = useFonts({
-        PlusJakartaSans: require('../assets/fonts/Plus Jakarta Sans.ttf'),
-        PlusJakartaSansMedium: require('../assets/fonts/Plus Jakarta Sans Medium.ttf'),
-    })
-    if(!loaded){
-        return null;
-    }
 
     const [hidePassword, setHidePassword] = useState(true);
 
@@ -63,7 +49,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     text:{
-        fontFamily: 'PlusJakartaSans',
         fontSize: 12,
         color: '#f04438',
         width: 310,

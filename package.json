@@ -27,7 +27,9 @@
     "react-native": "0.74.1",
     "react-native-dotenv": "^3.4.11",
     "react-native-ratings": "^7.6.1",
-    "react-native-svg": "^15.3.0"
+    "react-native-svg": "^15.3.0",
+    "react-native-webview": "^13.10.3",
+    "react-native-youtube-iframe": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

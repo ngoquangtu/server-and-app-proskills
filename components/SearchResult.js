@@ -1,19 +1,24 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, ScrollView, View, Text } from 'react-native'
 import React from 'react'
+import SearchResultItem from './SearchResultItem'
 
-const SearchResult = () => {
+const SearchResult = ({items, navigation}) => {
   return (
-    <View style={styles.container}>
-      <FlatList data={itemData}
-        renderItem={({item}) => <CarouselItem item={item}/>}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item.id}
-        pagingEnabled
-        horizontal
-        onViewableItemsChanged={onViewableItemsChanged}
-        ref={carouselRef}
-      />
-      <Pagination data={itemData} index={slideIndex}/>
+    items.length ? 
+    <ScrollView>
+      {items.map((item, index) => (
+        <View key={index}>
+          <SearchResultItem 
+            item={item}
+            navigation={navigation}
+          />
+        </View>
+      ))}
+    </ScrollView>
+    : 
+    <View style={{width: '100%', justifyContent:'center', marginTop: 100}}>
+      <Image source={require('../assets/onboardCarouselItem2.png')} style={styles.noResult}/>
+      <Text style={styles.noResultText}>No Results</Text>
     </View>
   )
 }
@@ -22,6 +27,15 @@ export default SearchResult
 
 const styles = StyleSheet.create({
     noResult:{
-        backgroundColor: '#000',
-    }
+      width: 210,
+      height: 196,
+      resizeMode: 'contain',
+      alignSelf: 'center',
+    },
+    noResultText: {
+      color: '#70747E',
+      fontSize: 16,
+      marginTop: 20,
+      textAlign: 'center',
+    },
 })

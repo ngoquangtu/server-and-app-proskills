@@ -13,14 +13,18 @@ import ChangePasswordForm from './ForgotPassword/ForgotPassword2'
 import CourseInfo from './Courses/CourseInfo';
 import { AuthContext, AuthProvider } from '../utils/Context';
 import WatchVideo from './Courses/WatchVideo';
+import AboutUs from './AppInfo/AboutUs';
+import Contact from './AppInfo/Contact';
+import HelpAndSupport from './AppInfo/HelpAndSupport';
+import { StatusBar } from 'react-native';
 
 const Stack = createStackNavigator();
 
 export default function StackNav() {
   const context = React.useContext(AuthContext);
-    
   return (
     <NavigationContainer>
+      <StatusBar backgroundColor="#12B7BD"/>
         <Stack.Navigator initialRouteName={context.checkLogin() ? "HomePage" : "Onboarding"}>
             <Stack.Screen name="HomePage" component={MainPage} options={{headerShown:false}}/>
             <Stack.Screen name="Onboarding" component={OnboardingPage} options={{headerShown:false}} />
@@ -33,6 +37,9 @@ export default function StackNav() {
             <Stack.Screen name="SignUpDone" component={SignUpDonePage} options={{headerShown:false}}/>
             <Stack.Screen name="CourseInfo" component={CourseInfo} options={{headerShown:false}}/>
             <Stack.Screen name="WatchVideo" component={WatchVideo} options={{headerShown:false}}/>
+            <Stack.Screen name="AboutUs" component={AboutUs} options={{headerShown:false}}/>
+            <Stack.Screen name="Contact" component={Contact} options={{headerShown:false}}/>
+            <Stack.Screen name="Support" component={HelpAndSupport} options={{headerShown:false}}/>
         </Stack.Navigator>
     </NavigationContainer>
   );

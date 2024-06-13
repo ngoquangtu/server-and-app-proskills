@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Image, View, Text, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {LOCALHOST, PORT} from '@env';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,9 +6,10 @@ import CourseTab from '../../components/CourseTab';
 import { Rating } from 'react-native-ratings';
 import { CustomButton0 } from '../../components/Button';
 import Header from './Header';
+import LoadingPage from '../Loading';
 
 const CourseInfo = ({route, navigation}) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [courseData, setCourseData] = useState({
     course:
     {
@@ -17,13 +18,13 @@ const CourseInfo = ({route, navigation}) => {
       publisher: "",
       rating: 0,
       title: "",
+      thumbnail: "",
     },
     numberofRating: 0,
     numberofVideo: 0,
   })
 
   useEffect(() =>{
-    setIsLoading(true);
     const getCourseById = async () => {
       try {
         const api = await `http://${LOCALHOST}:${PORT}/api/courses/${route.params.courseId}`;
@@ -36,7 +37,8 @@ const CourseInfo = ({route, navigation}) => {
 
         if(response.status === 200){
           const data = await response.json();
-          setCourseData(data);
+          await setCourseData(data);
+          setIsLoading(false);
           return;
         }
       } catch (error) {
@@ -45,15 +47,15 @@ const CourseInfo = ({route, navigation}) => {
     }
 
     getCourseById();
-    setIsLoading(false);
   });
 
 
   return (
+    isLoading? <LoadingPage></LoadingPage> : 
     <View style={styles.frameParent}>
       <Header navigation={navigation}/>
       <ScrollView>
-        <Image source={require('../../assets/checkEmail.png')} style={styles.thumbnail} />
+        <Image source={{uri: courseData.course.thumbnail}} style={styles.thumbnail} />
         <Text style={styles.publisher}>{courseData.course.publisher}</Text>
         <Text style={styles.title}>{courseData.course.title}</Text>
         <CourseTab type={0}/>
@@ -77,11 +79,11 @@ const CourseInfo = ({route, navigation}) => {
         </View>
         <Text style={{fontSize: 14, fontWeight:'700', letterSpacing: 0.1, marginLeft: 19.5}}>What you will learn</Text>
         <Text style={{fontSize: 13, color: '#70747e', letterSpacing: 0.1, marginLeft: 19.5, width: '92%'}}>
-          ansugidnhikgdbigesigbeone edfjigshxbui gj rniebehjs fiojh ifdkg n ctji
+          {courseData.course.description}
         </Text>
         <CustomButton0 title={"Start now"} style={{alignSelf: 'center', height: 38}}
         onPress={() => {
-          navigation.navigate("WatchVideo", {videoId: 0, courseId: courseData.course.id})
+          navigation.navigate("WatchVideo", {course: courseData.course})
         }}/>
       </ScrollView>
     </View>);
@@ -90,14 +92,15 @@ const CourseInfo = ({route, navigation}) => {
 export default CourseInfo
 const styles = StyleSheet.create({
   frameParent: {
-      flex: 1,
-      width: "100%",
-      padding: 10,
-      backgroundColor: '#fff',
+    flex: 1,
+    width: "100%",
+    paddingVertical: 10,
+    backgroundColor: '#fff',
   },
   thumbnail: {
     width: '100%',
-    height: 183,
+    height: 220,
+    resizeMode: 'stretch',
   },
   publisher: {
     marginTop: 9,
