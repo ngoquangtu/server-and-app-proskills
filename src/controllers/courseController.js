@@ -101,7 +101,7 @@ exports.enrolllCourse= async(req,res)=>
     {
         const {id}=req.user?.userId;
         const {courseId}=req.params;
-        const result=await Course.enrollCourseById(id,courseId);
+        const result=await Course.enrollCourseById(courseId,id);
         res.status(200).json(result);
     }
     catch(err)
