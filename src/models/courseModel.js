@@ -210,8 +210,6 @@ const Course=
         {
             throw err;
         }
-    }
-    
-
+    },
 }
 module.exports=Course;
