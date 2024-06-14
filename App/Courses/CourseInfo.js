@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, Text, ScrollView } from 'react-native'
+import { StyleSheet, Image, View, Text, ScrollView, Modal } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import {LOCALHOST, PORT} from '@env';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,11 +10,13 @@ import LoadingPage from '../Loading';
 import { AuthContext } from '../../utils/Context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CommentAndRate from './CommentAndRate';
+import { CustomButton2 } from '../../components/Button';
 
 const CourseInfo = ({route, navigation}) => {
   const context = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [commentList, setCommentList] = useState([]);
+  const [commentMode, setCommentMode] = useState(false);
   const [courseData, setCourseData] = useState({
     course:
     {
@@ -46,16 +48,18 @@ const CourseInfo = ({route, navigation}) => {
           setIsLoading(false);
         }
 
-        const api1 = await `http://${LOCALHOST}:${PORT}/api/comments/courses/${route.params.courseId}/comments`;
+        const api1 = await `http://${LOCALHOST}:${PORT}/api/courses/comment/${route.params.courseId}`;
         const response1 = await fetch(api1, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
+        console.log(response1.status);
 
         if(response1.status === 200){
           const data = await response1.json();
+          console.log(data)
           setCommentList(data);
           return;
         }
@@ -98,11 +102,11 @@ const CourseInfo = ({route, navigation}) => {
     isLoading? <LoadingPage></LoadingPage> : 
     <View style={styles.frameParent}>
       <Header navigation={navigation}/>
-      <ScrollView>
         <Image source={{uri: courseData.course.thumbnail}} style={styles.thumbnail} />
         <Text style={styles.publisher}>{courseData.course.publisher}</Text>
         <Text style={styles.title}>{courseData.course.title}</Text>
         <CourseTab type={0}/>
+        
         <View style={styles.smallInfo}>
           <View style={{flexDirection: 'row', textAlign: 'left'}}>
             <Text style={{fontSize: 14, letterSpacing: 0.1, color: '#888c94', marginLeft: 20,}}>{courseData.course.rating}</Text>
@@ -126,13 +130,27 @@ const CourseInfo = ({route, navigation}) => {
           {courseData.course.description}
         </Text>
         <CustomButton0 title={"Start now"} style={{alignSelf: 'center', height: 38}}
-        onPress={() => {
-          addCourse();
-          navigation.navigate("WatchVideo", {course: courseData.course})
-        }}/>
-
-        
-      </ScrollView>
+          onPress={() => {
+            addCourse();
+            navigation.navigate("WatchVideo", {course: courseData.course})
+          }}/>
+          
+        <Text style={{marginTop: 20, marginLeft: 17, fontSize: 16, fontWeight: 'bold'}}>Student comments</Text>
+        <CustomButton2 
+          title={"Add comment and rate"} 
+          style={{width: '60%', alignSelf:'center', marginBottom: -10, marginTop: 10,}}
+          onPress={()=>{
+            setCommentMode(true);
+          }}/>
+        {commentList.length !== 0 ? <CommentAndRate items={commentList}/> : <></>}
+        <Modal
+          animationType='slide'
+          visible={commentMode}
+          transparent={true}>
+          <CustomButton0 title={"123"} onPress={() => {
+            setCommentMode(false);
+          }}></CustomButton0>
+        </Modal>
     </View>);
 }
 

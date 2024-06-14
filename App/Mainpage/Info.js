@@ -5,24 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../utils/Context';
-
-function convertTimestamp(time) {
-  try{
-    const date = new Date(time);
-
-    const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    };
-    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-  
-    return formattedDate;
-  }
-  catch (error){
-    return;
-  }
-}
+import { convertTimestamp } from '../../utils/Utility';
 
 const Info = ({navigation}) => {
   const [image, setImage] = useState(null);
