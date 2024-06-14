@@ -240,7 +240,7 @@ const Course=
             throw err;
         }
     },
-    checkRatingUsed:async(course_id,userId)
+    checkRatingUsed:async(course_id,userId)=>
     {
         const query='SELECT * FROM rating_of_course WHERE course_id = ? AND userId = ?';
         try

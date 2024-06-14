@@ -19,7 +19,7 @@ const Comment=
     {
         try
         {
-            const query='INSERT INTO comments_video (course_id, userId, comment) VALUES (?, ?, ?)';
+            const query='INSERT INTO comments_course  (course_id, userId, comment_text) VALUES (?, ?, ?)';
             const rows=await db.query(query,[course_id,id,comment]);
             return rows;
         }

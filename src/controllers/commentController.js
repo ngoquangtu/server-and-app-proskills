@@ -19,8 +19,8 @@ exports.create = async (req, res) => {
     try {
         const { content } = req.body;
         const courseId = req.params.courseId;
-        const userId = req.userId;
-        const comment = await Comment.create({ courseId, userId, content });
+        const userId = req.user.userId;
+        const comment = await Comment.create(courseId, userId, content );
         res.status(201).json(comment); // 201 Created
     } catch (err) {
         console.error('Error creating comment:', err);
