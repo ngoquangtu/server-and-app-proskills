@@ -101,8 +101,17 @@ exports.enrolllCourse= async(req,res)=>
     {
         const id=req.user?.userId;
         const {courseId}=req.body;
-        const result=await Course.enrollCourseById(courseId,id);
+        const checkenroll= await Course.checkEnrollCourseById();
+        if(checkenroll)
+        {
+            const result=await Course.enrollCourseById(courseId,id);
         res.status(200).json(result);
+        }
+        else
+        {
+            res.status(403).json({message:'khoa hoc da them roi '});
+        }
+        
     }
     catch(err)
     {

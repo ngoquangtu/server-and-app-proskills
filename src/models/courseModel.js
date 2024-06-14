@@ -226,18 +226,13 @@ const Course=
         }
     },
     checkEnrollCourseById:async(course_id,user_id)=>
-    {
-        const query='SELECT * FROM enrollments WHERE course_id = ? AND userId = ?';
-        try
-        {
-            const rows=await db.query(query,[course_id,user_id]);
-            if(rows!==null)
-            {
-                return true;
-            }
-            else
-            {
+    {    const query = 'SELECT * FROM enrollments WHERE course_id = ? AND userId = ?';
+        try {
+            const rows = await db.query(query, [course_id, user_id]);
+            if (rows.length > 0) {
                 return false;
+            } else {
+                return true;
             }
         }
         catch(err)
