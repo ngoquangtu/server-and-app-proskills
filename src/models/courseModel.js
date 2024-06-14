@@ -225,5 +225,38 @@ const Course=
             throw err;
         }
     },
+    checkEnrollCourseById:async(course_id,user_id)=>
+    {
+        const query='SELECT * FROM enrollments WHERE course_id = ? AND userId = ?';
+        try
+        {
+            const rows=await db.query(query,[course_id,user_id]);
+            if(rows!==null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    createRating:async(course_id,rating)=>
+    {
+        const query='INSERT INTO rating_of_course(course_id,rating) VALUES(?,?)';
+        try
+        {
+            const rows=await db.query(query,[course_id,rating]);
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    }
 }
 module.exports=Course;

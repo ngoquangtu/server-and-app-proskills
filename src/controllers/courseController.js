@@ -109,3 +109,17 @@ exports.enrolllCourse= async(req,res)=>
         res.status(500).json({message:'Error enroll course',error:err.message});
     }
 }
+exports.createRating=async(req,res)=>
+    {
+        try
+        {
+            const {rating}=req.body;
+            const courseId=req.params.courseId;
+            const result=await Course.createRating(courseId,rating);
+            res.status(200).json(result);
+        }
+        catch(err)
+        {
+            res.status(500).json({message:'Error create rating',error:err.message});
+        }
+    }

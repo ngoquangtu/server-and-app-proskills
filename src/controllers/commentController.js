@@ -17,17 +17,30 @@ exports.delete = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        const { content, rating } = req.body;
+        const { content } = req.body;
         const courseId = req.params.courseId;
         const userId = req.userId;
-        const comment = await Comment.create({ courseId, userId, content, rating });
+        const comment = await Comment.create({ courseId, userId, content });
         res.status(201).json(comment); // 201 Created
     } catch (err) {
         console.error('Error creating comment:', err);
         res.status(500).json({ message: 'Error creating comment', error: err.message }); 
     }
 };
-
+exports.createRating=async(req,res)=>
+    {
+        try
+        {
+            const {rating}=req.body;
+            const courseId=req.params.courseId;
+            const result=await Comment.createRating(courseId,rating);
+            res.status(200).json(result);
+        }
+        catch(err)
+        {
+            res.status(500).json({message:'Error create rating',error:err.message});
+        }
+    }
 exports.getAllComment = async (req, res) => {
     try {
         const { courseId } = req.params;
