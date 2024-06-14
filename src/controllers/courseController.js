@@ -125,8 +125,18 @@ exports.createRating=async(req,res)=>
             const {rating}=req.body;
             const courseId=req.params.courseId;
             const userId=req.user?.userId;
-            const result=await Course.createRating(courseId,rating,userId);
-            res.status(200).json(result);
+            const checkRating= await Course.checkRatingUsed(courseId,userId);
+            if(checkRating)
+            {
+                const result=await Course.createRating(courseId,rating,userId);
+                res.status(200).json(result);
+            }
+            else
+            {
+                res.status(403).json({message:'khoa hoc da them rating  roi '});
+            }
+
+
         }
         catch(err)
         {

@@ -225,13 +225,33 @@ const Course=
             throw err;
         }
     },
-    checkEnrollCourseById:async(course_id,user_id)=>
+    checkEnrollCourseById:async(course_id,userId)=>
     {    const query = 'SELECT * FROM enrollments WHERE course_id = ? AND userId = ?';
         try {
-            const rows = await db.query(query, [course_id, user_id]);
+            const rows = await db.query(query, [course_id, userId]);
             if (rows.length > 0) {
                 return false;
             } else {
+                return true;
+            }
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
+    checkRatingUsed:async(course_id,userId)
+    {
+        const query='SELECT * FROM rating_of_course WHERE course_id = ? AND userId = ?';
+        try
+        {
+            const rows=await db.query(query,[course_id,userId]);
+            if(rows.length>0)
+            {
+                return false;
+            }
+            else
+            {
                 return true;
             }
         }
