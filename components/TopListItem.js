@@ -21,7 +21,7 @@ const TopListItem = ({item, navigation}) => {
         }}>
         <Image source={{uri: item.thumbnail}} style={styles.thumbnail}/>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.author}>{item.publisher}</Text>
+        <Text style={styles.author} numberOfLines={1}>{item.publisher}</Text>
         <View style={styles.ratingContainer}>
             <Text style={styles.rateNum}>{item.rating}</Text>
             <Rating

@@ -1,7 +1,6 @@
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
-import { useFonts } from 'expo-font';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const CustomTextInput = ({placeHolder, warningText, style, onChangeText, onBlur}) => {

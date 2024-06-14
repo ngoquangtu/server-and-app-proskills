@@ -13,8 +13,8 @@ const Search = ({navigation}) => {
   const context = useContext(AuthContext);
   const search = async (key) => {
     if(key.replace(/\s+/g, '') === ""){
-      setSearchResult([]);
       setSearchKey(key);
+      setSearchResult([]);
       return;
     };
     try {
@@ -73,11 +73,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    fontWeight: 'semibold',
+    fontWeight: 'bold',
     fontSize: 20,
     letterSpacing: 1,
     textAlign: 'center',
     marginTop: 20,
+    color: '#12B7BD',
   },
   nonSearchText: {
     color: '#70747E',

@@ -17,6 +17,7 @@ import AboutUs from './AppInfo/AboutUs';
 import Contact from './AppInfo/Contact';
 import HelpAndSupport from './AppInfo/HelpAndSupport';
 import { StatusBar } from 'react-native';
+import Info from './Mainpage/Info';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ export default function StackNav() {
             <Stack.Screen name="AboutUs" component={AboutUs} options={{headerShown:false}}/>
             <Stack.Screen name="Contact" component={Contact} options={{headerShown:false}}/>
             <Stack.Screen name="Support" component={HelpAndSupport} options={{headerShown:false}}/>
+            <Stack.Screen name="Info" component={Info} options={{headerShown:false}}/>
         </Stack.Navigator>
     </NavigationContainer>
   );

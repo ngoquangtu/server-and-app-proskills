@@ -1,5 +1,5 @@
 import { StyleSheet, Image, View, Text, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {LOCALHOST, PORT} from '@env';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CourseTab from '../../components/CourseTab';
@@ -7,9 +7,14 @@ import { Rating } from 'react-native-ratings';
 import { CustomButton0 } from '../../components/Button';
 import Header from './Header';
 import LoadingPage from '../Loading';
+import { AuthContext } from '../../utils/Context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CommentAndRate from './CommentAndRate';
 
 const CourseInfo = ({route, navigation}) => {
+  const context = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [commentList, setCommentList] = useState([]);
   const [courseData, setCourseData] = useState({
     course:
     {
@@ -37,18 +42,57 @@ const CourseInfo = ({route, navigation}) => {
 
         if(response.status === 200){
           const data = await response.json();
-          await setCourseData(data);
+          setCourseData(data);
           setIsLoading(false);
+        }
+
+        const api1 = await `http://${LOCALHOST}:${PORT}/api/comments/courses/${route.params.courseId}/comments`;
+        const response1 = await fetch(api1, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if(response1.status === 200){
+          const data = await response1.json();
+          setCommentList(data);
           return;
         }
+
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       }
     }
 
     getCourseById();
-  });
+  }, []);
 
+  const addCourse = async () => {
+    try {
+      const api = await `http://${LOCALHOST}:${PORT}/api/courses/enrollmentbyId `;
+      const response = await fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          courseId: route.params.courseId,
+        }),
+        cookies: JSON.stringify({
+          token: await AsyncStorage.getItem('JWT'),
+        })
+      });
+
+      if(response.status === 200){
+        const data = await response.json();
+        console.log(data);
+        return;
+      }
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error);
+    }
+  }
 
   return (
     isLoading? <LoadingPage></LoadingPage> : 
@@ -83,8 +127,11 @@ const CourseInfo = ({route, navigation}) => {
         </Text>
         <CustomButton0 title={"Start now"} style={{alignSelf: 'center', height: 38}}
         onPress={() => {
+          addCourse();
           navigation.navigate("WatchVideo", {course: courseData.course})
         }}/>
+
+        
       </ScrollView>
     </View>);
 }

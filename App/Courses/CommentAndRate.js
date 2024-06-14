@@ -1,14 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const CommentAndRate = () => {
+const CommentAndRate = ({items}) => {
   return (
-    <View>
+    <ScrollView>
       <Text>Student feedback</Text>
-      <View>
-        <Text></Text>
-      </View>
-    </View>
+      {items.map((item, index) => (
+        <View key={index}>
+          <VideoButtonItem 
+            item={item} 
+            onPress={() => context.setCurrentVideo(item.id)}
+            isCurrentLesson={item.id === context.currentVideo}></VideoButtonItem>
+        </View>
+      ))}
+    </ScrollView>
   )
 }
 

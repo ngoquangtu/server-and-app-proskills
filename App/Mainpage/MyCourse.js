@@ -1,12 +1,15 @@
 import { StyleSheet, SafeAreaView, ScrollView, Text, Image, View } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FloatingLoginButton } from '../../components/Button'
 import { AuthContext } from '../../utils/Context'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {LOCALHOST, PORT} from '@env'
 
 const MyCourse = ({navigation}) => {
   const context = useContext(AuthContext);
+  const [myCourseList, setMyCourseList] = useState([])
   useEffect(() => {
-    const search = async (key) => {
+    const getMyCourseList = async (key) => {
       try {
         const api = await `http://${LOCALHOST}:${PORT}/api/courses/enrollments`;
         const response = await fetch(api, {
@@ -14,13 +17,14 @@ const MyCourse = ({navigation}) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            title: key,
-          }),
+          cookies: JSON.stringify({
+            token: await AsyncStorage.getItem('JWT'),
+          })
         });
+        
         const data = await response.json();
         if(response.status === 200){
-          console.log(data)
+          
           return;
         }
         
@@ -28,7 +32,9 @@ const MyCourse = ({navigation}) => {
         console.error('There was a problem with your fetch operation:', error);
       }
     };
-  })
+    getMyCourseList();
+
+  }, [])
 
   return (
     <SafeAreaView style={{backgroundColor: '#ffffff', height: '100%', alignItems: 'center'}}>
@@ -58,11 +64,12 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   title: {
-    fontWeight: 'semibold',
+    fontWeight: 'bold',
     fontSize: 20,
     letterSpacing: 1,
     textAlign: 'center',
     marginTop: 20,
+    color: '#12B7BD',
   },
   description: {
     width: '50%',
