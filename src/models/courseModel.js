@@ -95,7 +95,7 @@ const Course=
     },
     getAllCommentofCourse:async(id)=>
     {
-        const query='SELECT comments_course.*, users.username AS username FROM comments_course LEFT JOIN users ON comments_course.userId = users.id WHERE comments_course.course_id = ?';
+        const query='SELECT comments_course.*, users.username AS username,users.avatar_url as useravatar FROM comments_course LEFT JOIN users ON comments_course.userId = users.id WHERE comments_course.course_id = ?';
         try
         {
             const rows=await db.query(query,[id]);

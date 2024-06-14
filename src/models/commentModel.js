@@ -31,7 +31,7 @@ const Comment=
     },
     getAllComment:async(id)=>
     {
-        const query='SELECT comments_video.*, video.title AS video_title FROM comments_video JOIN video ON comments_video.video_id = video.id JOIN courses ON video.course_id = courses.id WHERE comments_video.course_id = ?';
+        const query='SELECT comments_video.*, video.title AS video_title FROM comments_video LEFT JOIN video ON comments_video.video_id = video.id JOIN courses ON video.course_id = courses.id WHERE comments_video.course_id = ?';
         try
         {   
             const rows=await db.query(query,[id]);
