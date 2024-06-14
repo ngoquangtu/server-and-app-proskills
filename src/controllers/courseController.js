@@ -124,7 +124,8 @@ exports.createRating=async(req,res)=>
         {
             const {rating}=req.body;
             const courseId=req.params.courseId;
-            const result=await Course.createRating(courseId,rating);
+            const userId=req.user?.userId;
+            const result=await Course.createRating(courseId,rating,userId);
             res.status(200).json(result);
         }
         catch(err)

@@ -240,12 +240,12 @@ const Course=
             throw err;
         }
     },
-    createRating:async(course_id,rating)=>
+    createRating:async(course_id,rating,userId)=>
     {
-        const query='INSERT INTO rating_of_course(course_id,rating) VALUES(?,?)';
+        const query='INSERT INTO rating_of_course(course_id,rating,userId) VALUES(?,?,?)';
         try
         {
-            const rows=await db.query(query,[course_id,rating]);
+            const rows=await db.query(query,[course_id,rating,userId]);
             return rows;
         }
         catch(err)
