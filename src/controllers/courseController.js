@@ -105,7 +105,7 @@ exports.enrolllCourse= async(req,res)=>
         if(checkenroll)
         {
             const result=await Course.enrollCourseById(courseId,id);
-        res.status(200).json(result);
+            res.status(200).json(result);
         }
         else
         {

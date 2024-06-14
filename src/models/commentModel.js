@@ -29,6 +29,19 @@ const Comment=
 
         }
     },
+    createCommentVideo:async(video_id,course_id,userId,comment)=>
+    {
+        try
+        {
+            const query='INSERT INTO comments_video (video_id,course_id, userId, comment_text) VALUES (?, ?, ?,?)';
+            const rows=await db.query(query,[video_id,course_id,userId,comment]);
+            return rows;
+        }
+        catch(err)
+        {
+            throw err;
+        }
+    },
     getAllComment:async(id)=>
     {
         const query='SELECT comments_video.*, video.title AS video_title FROM comments_video LEFT JOIN video ON comments_video.video_id = video.id JOIN courses ON video.course_id = courses.id WHERE comments_video.course_id = ?';

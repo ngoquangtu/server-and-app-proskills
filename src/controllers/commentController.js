@@ -27,6 +27,24 @@ exports.create = async (req, res) => {
         res.status(500).json({ message: 'Error creating comment', error: err.message }); 
     }
 };
+exports.createCommentVideo=async(req,res)=>
+{
+    try
+    {
+        const {content}=req.body;
+        const courseId=req.params.courseId;
+        const videoId=req.params.videoId;
+        const userId= req.user.userId;
+        const comment=await Comment.createCommentVideo(videoId,courseId,userId,content);
+        res.status(201).json(comment);
+
+    }
+    catch(err)
+    {
+        console.error('Error creating comment:', err);
+        res.status(500).json({ message: 'Error creating comment', error: err.message });
+    }
+};
 
 exports.getAllComment = async (req, res) => {
     try {
@@ -38,3 +56,4 @@ exports.getAllComment = async (req, res) => {
         res.status(500).json({ message: 'Error getting all comments by course', error: err.message }); 
     }
 };
+
