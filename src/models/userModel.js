@@ -12,7 +12,7 @@ const User = {
         try {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(user.password, salt);
-            const defaultAvatar_url ='12151.svg';
+            const defaultAvatar_url ='https://firebasestorage.googleapis.com/v0/b/lexiland2024.appspot.com/o/avatars%2FavatarDefault.jfif?alt=media&token=8dc1b7e2-950d-4b46-bd63-8f6d750f3827';
             const role = 'user';
             const query = 'INSERT INTO users (username, email, password, role, avatar_url) VALUES (?, ?, ?, ?, ?)';
             const values = [user.username, user.email, hashedPassword, role, defaultAvatar_url];

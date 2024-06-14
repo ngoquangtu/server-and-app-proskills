@@ -95,7 +95,7 @@ const Course=
     },
     getAllCommentofCourse:async(id)=>
     {
-        const query='SELECT comments_course.*, users.username AS username FROM comments_course LEFT JOIN users ON comments_course.user_id = users.id WHERE comments_course.course_id = ?';
+        const query='SELECT comments_course.*, users.username AS username FROM comments_course LEFT JOIN users ON comments_course.userId = users.id WHERE comments_course.course_id = ?';
         try
         {
             const rows=await db.query(query,[id]);
@@ -108,7 +108,7 @@ const Course=
     },
     getFiveTopCoursesbyRating :async()=>
     {
-        const query='SELECT Courses.*,COUNT(Enrollments.user_id) as subcribeNum FROM Courses  LEFT JOIN Enrollments ON Courses.id = Enrollments.course_id GROUP BY Courses.id  ORDER BY rating DESC LIMIT 5';
+        const query='SELECT Courses.*,COUNT(Enrollments.userId) as subcribeNum FROM Courses  LEFT JOIN Enrollments ON Courses.id = Enrollments.course_id GROUP BY Courses.id  ORDER BY rating DESC LIMIT 5';
         try
         {
             const rows=await db.query(query);
@@ -121,8 +121,8 @@ const Course=
     },
     getFiveTopCoursesbyEnrollments:async()=>
     {
-        const query='SELECT course_id,COUNT(user_id) as enrollment_count FROM Enrollments GROUP BY course_id  ORDER BY enrollment_count DESC LIMIT 5';
-        const query1='SELECT  courses.*,COUNT(enrollments.user_id) as subcribeNum FROM courses LEFT JOIN enrollments ON courses.id=enrollments.course_id  WHERE courses.id = ?' ;
+        const query='SELECT course_id,COUNT(userId) as enrollment_count FROM Enrollments GROUP BY course_id  ORDER BY enrollment_count DESC LIMIT 5';
+        const query1='SELECT  courses.*,COUNT(enrollments.userId) as subcribeNum FROM courses LEFT JOIN enrollments ON courses.id=enrollments.course_id  WHERE courses.id = ?' ;
         try
         {
             const rows=await db.query(query);
@@ -142,7 +142,7 @@ const Course=
     getFiveTopCoursesByComments:async()=>
     {
         const query='SELECT course_id,COUNT(userId) as comment_count FROM comments_course GROUP BY course_id ORDER BY comment_count DESC LIMIT 5';
-        const query1='SELECT courses.*,COUNT(enrollments.user_id) as subcribeNum  FROM courses  LEFT JOIN enrollments ON courses.id=enrollments.course_id WHERE courses.id = ?'
+        const query1='SELECT courses.*,COUNT(enrollments.userId) as subcribeNum  FROM courses  LEFT JOIN enrollments ON courses.id=enrollments.course_id WHERE courses.id = ?'
         try
         {       
             const rows=await db.query(query);
@@ -161,7 +161,7 @@ const Course=
     },
     getAllCourseByEnrollments:async(id)=>
     {
-        const query='SELECT courses.* FROM courses JOIN enrollments ON courses.id=enrollments.course_id WHERE enrollments.user_id = ?'
+        const query='SELECT courses.* FROM courses JOIN enrollments ON courses.id=enrollments.course_id WHERE enrollments.userId = ?'
         try
         {
             const rows=await db.query(query,[id]);
@@ -214,7 +214,7 @@ const Course=
     enrollCourseById:async(course_id,user_id)=>
     {
 
-        const query='INSERT INTO enrollments(course_id,user_id) VALUES(?,?)';
+        const query='INSERT INTO enrollments(course_id,userId) VALUES(?,?)';
         try
         {
             const rows=await db.query(query,[course_id,user_id]);
