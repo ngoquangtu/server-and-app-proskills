@@ -29,7 +29,7 @@ exports.getCourseById = async (req, res) => {
 exports.getAllComments = async (req, res) => {
     try {
         const { id } = req.params;
-        const comments = await Course.getAllComments(id);
+        const comments = await Course.getAllCommentofCourse(id);
         res.status(200).json(comments);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching comments', error: err.message });
