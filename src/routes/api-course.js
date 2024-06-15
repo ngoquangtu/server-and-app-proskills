@@ -11,6 +11,6 @@ router.post('/mostrating',courseController.getAllCourseByRating);
 router.post('/mostcomment',courseController.gellAllCourseByComment);
 router.post('/mostenrollment',courseController.gellAllCourseByEnrollments);
 router.post('/enrollments',verifyToken,courseController.getAllCourseEnrollmentsOfUsers);
-router.post('/enrollmentbyId',verifyToken,courseController.enrolllCourse);
+router.post('/enrollmentbyId',verifyToken,courseController.enrollCourse);
 router.post('/rating/:courseId',verifyToken,courseController.createRating);
 module.exports = router;

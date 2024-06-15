@@ -228,11 +228,7 @@ const Course=
     {    const query = 'SELECT * FROM enrollments WHERE course_id = ? AND userId = ?';
         try {
             const rows = await db.query(query, [course_id, userId]);
-            if (rows.length > 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return rows.length===0;
         }
         catch(err)
         {
