@@ -1,5 +1,4 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useFonts } from 'expo-font'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { CustomSecureTextInput } from '../../components/TextInput'
 import { CustomButton0 } from '../../components/Button'
@@ -7,13 +6,6 @@ import {LOCALHOST, PORT} from '@env'
 import { useState } from 'react'
 
 export default function ChangePasswordForm({navigation, route}) {
-  const [loaded] = useFonts({
-    PlusJakartaSans: require('../../assets/fonts/Plus Jakarta Sans.ttf'),
-    PlusJakartaSansMedium: require('../../assets/fonts/Plus Jakarta Sans Medium.ttf'),
-  })
-  if(!loaded){
-      return null;
-  }
 
   const [inputErrors, setInputErrors] = useState({
     password: '',
@@ -39,7 +31,7 @@ export default function ChangePasswordForm({navigation, route}) {
           confirmPassword: input.confirmPassword,
         }),
       });
-      console.log(response.status)
+      
       if(response.status === 200){
         navigation.navigate('ForgotPass3');
         return;
@@ -59,7 +51,7 @@ export default function ChangePasswordForm({navigation, route}) {
 
   return (
     <View >
-      <TouchableOpacity onPress={() => navigation.navigate('ForgotPass1')}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name='chevron-left' style={styles.backIcon}/>
       </TouchableOpacity>
       <Text style={styles.description}>Reset your password</Text>

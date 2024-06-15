@@ -54,7 +54,7 @@ export default function ForgotPass({navigation}) {
   return (
     <View>
       {isLoading? <ActivityIndicator size={"large"} style={styles.indicator}/> : <></>}
-      <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name='chevron-left' style={styles.backIcon}/>
       </TouchableOpacity>
       <Text style={styles.description}>Validate yourself</Text>

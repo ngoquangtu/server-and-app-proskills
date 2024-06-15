@@ -4,7 +4,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { CustomButton0 } from '../../components/Button'
 import FeedbackSent from './FeedbackSent'
 import {LOCALHOST, PORT} from '@env'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Contact = ({navigation}) => {
   const [feedback, setFeedback] = useState("");
@@ -22,20 +21,18 @@ const Contact = ({navigation}) => {
         body: JSON.stringify({
           feedback: feedback,
         }),
-        cookies: JSON.stringify({
-          token: await AsyncStorage.getItem('JWT'),
-        })
       });
       setIsSent(true);
 
       if(response.status === 200){
         setIsSent(true);
-        console.log("ok");
+        setFeedback("");
         return;
       }
     } catch (error) {
       console.error('There was a problem with your fetch operation:', error);
     }
+    setFeedback("");
   }
 
   return (
@@ -55,7 +52,7 @@ const Contact = ({navigation}) => {
         <TextInput style={{borderWidth: 2, textAlignVertical: 'top', padding: 10, borderRadius: 10, marginTop: 10,}}
           placeholder={"Add text here..."}
           onChangeText={(value) => {
-            setFeedback((feedback) => feedback = value)
+            setFeedback(value)
           }}
           defaultValue={""}
           multiline

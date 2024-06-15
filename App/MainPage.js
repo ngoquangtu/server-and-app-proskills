@@ -8,8 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainPage({navigation}) {
-  
+export default function MainPage() {
   return (
     <Tab.Navigator 
           screenOptions= {

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import { convertTimestamp } from '../utils/Utility'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const CommentBox = ({item}) => {
   return (
@@ -15,8 +16,8 @@ const CommentBox = ({item}) => {
             style={{marginTop: 5, width: '100%'}}>
             {item.comment_text}
         </Text>
-
       </View>
+      <MaterialCommunityIcons/>
     </View>
   )
 }

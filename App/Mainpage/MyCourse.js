@@ -2,8 +2,8 @@ import { StyleSheet, SafeAreaView, ScrollView, Text, Image, View } from 'react-n
 import React, { useContext, useEffect, useState } from 'react'
 import { FloatingLoginButton } from '../../components/Button'
 import { AuthContext } from '../../utils/Context'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import {LOCALHOST, PORT} from '@env'
+import SearchResult from '../../components/SearchResult'
 
 const MyCourse = ({navigation}) => {
   const context = useContext(AuthContext);
@@ -17,14 +17,12 @@ const MyCourse = ({navigation}) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          cookies: JSON.stringify({
-            token: await AsyncStorage.getItem('JWT'),
-          })
         });
         
-        const data = await response.json();
+
         if(response.status === 200){
-          
+          const data = await response.json();
+          setMyCourseList(data);
           return;
         }
         
@@ -45,7 +43,7 @@ const MyCourse = ({navigation}) => {
           <Image source={require('../../assets/myCourseUnauthen.png')} style={{alignSelf: 'center', marginTop: 60}}/>
           <Text style={styles.description}>Join Pro-Skills today to start your learning journey!</Text>
         </View> : 
-        <></>
+        <SearchResult items={myCourseList} navigation={navigation}/>
         }
         
       </ScrollView>

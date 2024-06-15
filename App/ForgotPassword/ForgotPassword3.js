@@ -1,15 +1,7 @@
 import { StyleSheet, Image, View, Text} from 'react-native';
-import { useFonts } from 'expo-font';
 import {CustomButton0, CustomButton1 } from '../../components/Button';
 
 export default function ChangeSuccess({navigation}) {
-  const [loaded] = useFonts({
-    PlusJakartaSans: require('../../assets/fonts/Plus Jakarta Sans.ttf'),
-    PlusJakartaSansMedium: require('../../assets/fonts/Plus Jakarta Sans Medium.ttf'),
-  })
-  if(!loaded){
-    return null;
-  }
 
   return (
     <View style={styles.container}>
@@ -18,8 +10,11 @@ export default function ChangeSuccess({navigation}) {
       <Image source={require('../../assets/checkEmail.png')} style={styles.image}/>
       
       <View style={styles.buttonField}>
-        <CustomButton0 title="Log in"/>
-        <CustomButton1 title="I'll do it later"/>
+        <CustomButton0 
+          title="Log in"
+          onPress={()=> {navigation.navigate('SignIn')}}/>
+        <CustomButton1 title="I'll do it later"
+          onPress={() => {navigation.navigate('HomePage')}}/>
       </View>
     </View>
   );

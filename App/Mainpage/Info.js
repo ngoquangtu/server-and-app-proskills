@@ -47,7 +47,7 @@ const Info = ({navigation}) => {
       {context.isLogin ? <></> : <FloatingLoginButton title={"Log in / Sign up"} navigation={navigation}/>}
       
       <View style={styles.infoView}>
-        <Image source={require('../../assets/default_avatar.png')} style={{borderRadius: 40, width: 110, height: 110}}/>
+        <Image source={context.isLogin? {uri: context.loginInfo.avatar_url} : require('../../assets/default_avatar.png')} style={{borderRadius: 56, width: 110, height: 110}}/>
         {context.isLogin ? 
         <View style={{width: '100%'}}>
           <Text style={styles.username}>{context.loginInfo.username}</Text>
@@ -68,8 +68,13 @@ const Info = ({navigation}) => {
           </Text>
           <CustomButton5 
             title={"Change Password"}
-            onPress={() => navigation.navigate('AboutUs')}/>
-          <CustomButton5 title={"My learning"}/>
+            onPress={() => navigation.navigate('ForgotPass2')}/>
+          <CustomButton5 
+            title={"My learning"}
+            onPress={()=> navigation.navigate('MyCourse')}/>
+          <CustomButton5 
+            title={"Contact us"}
+            onPress={() => navigation.navigate('Contact')}/>
         </View>
         :
         <View></View>
@@ -83,9 +88,6 @@ const Info = ({navigation}) => {
           <CustomButton5 
             title={"Help and Support"}
             onPress={() => navigation.navigate('Support')}/>
-          <CustomButton5 
-            title={"Contact us"}
-            onPress={() => navigation.navigate('Contact')}/>
         </View>
         
       </View>
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     top: 120,
     alignSelf: 'center',
     alignItems: 'center',
-    width: 200,
+    width: 350,
   },
   username: {
     fontSize: 16,

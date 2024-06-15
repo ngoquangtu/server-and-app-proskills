@@ -51,6 +51,15 @@ const CustomButton5 = ({title, style, onPress}) => {
     );
 };
 
+const CustomButton6 = ({title, style, onPress}) => {
+    return (
+        <TouchableOpacity onPress={onPress} 
+        style={[styles.buttonCenter, {paddingVertical: 15, borderColor:'#12B7BD', borderWidth: 2}, style]}>
+            <Text style={[styles.buttonColorGreen]}>{title}</Text>
+        </TouchableOpacity>
+    );
+};
+
 const BackToHomeButton = ({style, onPress}) => {
     return (
         <TouchableOpacity onPress={onPress} style={[styles.buttonCenter, {flexDirection: 'row'}, style]}>
@@ -148,4 +157,4 @@ const styles = StyleSheet.create({
 
 });
 
-export {CustomButton0, CustomButton1, CustomButton2, CustomButton3, CustomButton4, CustomButton5, BackToHomeButton, FloatingLoginButton};
+export {CustomButton0, CustomButton1, CustomButton2, CustomButton3, CustomButton4, CustomButton5, CustomButton6, BackToHomeButton, FloatingLoginButton};
