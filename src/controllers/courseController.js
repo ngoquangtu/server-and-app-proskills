@@ -5,6 +5,7 @@ const Course = require('../models/courseModel');
 exports.getAllCourses = async (req, res) => {
     try {
         const courses = await Course.getAll();
+        
         res.status(200).json(courses);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching courses', error: err.message });
@@ -29,8 +30,17 @@ exports.getCourseById = async (req, res) => {
 exports.getAllComments = async (req, res) => {
     try {
         const { id } = req.params;
+        let own;
         const comments = await Course.getAllCommentofCourse(id);
-        res.status(200).json(comments);
+        if(comments.userId===req.user?.userId)
+        {
+            own=true;
+        }
+        else
+        {
+            own=false;
+        }
+        res.status(200).json({own,comments});
     } catch (err) {
         res.status(500).json({ message: 'Error fetching comments', error: err.message });
     }

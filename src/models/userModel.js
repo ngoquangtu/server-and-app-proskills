@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const nodemailer=require('nodemailer');
 const fs=require('fs').promises;
 const path = require('path');
-
+const { OAuth2Client } = require('google-auth-library');
 
 require('dotenv').config();
 const User = {
@@ -12,7 +12,14 @@ const User = {
         try {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(user.password, salt);
-            const defaultAvatar_url ='https://firebasestorage.googleapis.com/v0/b/lexiland2024.appspot.com/o/avatars%2FavatarDefault.jfif?alt=media&token=8dc1b7e2-950d-4b46-bd63-8f6d750f3827';
+            let arrayDefaultAvatar=['https://firebasestorage.googleapis.com/v0/b/lexiland2024.appspot.com/o/avatars%2FavatarDefault.jfif?alt=media&token=8dc1b7e2-950d-4b46-bd63-8f6d750f3827',
+                'https://firebasestorage.googleapis.com/v0/b/lexiland2024.appspot.com/o/avatars%2Favatar1.jpg?alt=media&token=d12203ef-e29b-4168-b986-bd6b181a1ca5',
+                'https://firebasestorage.googleapis.com/v0/b/lexiland2024.appspot.com/o/avatars%2Favatar2.png?alt=media&token=cd930998-7de5-46a8-a013-679bf534eff4',
+                'https://firebasestorage.googleapis.com/v0/b/lexiland2024.appspot.com/o/avatars%2Favatar3.png?alt=media&token=c8e79fa0-7ecc-4e3b-b9b8-d76c997f928d',
+                'https://firebasestorage.googleapis.com/v0/b/lexiland2024.appspot.com/o/avatars%2Favatar4.jpg?alt=media&token=5a2da0af-a24c-40b5-83cd-e6d5c41d755a'
+            ];
+            const defaultAvatar_url = arrayDefaultAvatar[Math.floor(Math.random() * arrayDefaultAvatar.length)];
+
             const role = 'user';
             const query = 'INSERT INTO users (username, email, password, role, avatar_url) VALUES (?, ?, ?, ?, ?)';
             const values = [user.username, user.email, hashedPassword, role, defaultAvatar_url];
@@ -83,25 +90,42 @@ const User = {
         }
     },
     sendEmail: async (email,token) => {
+        const GOOGLE_MAILER_CLIENT_ID = process.env.GOOGLE_MAILER_CLIENT_ID
+        const GOOGLE_MAILER_CLIENT_SECRET = process.env.GOOGLE_MAILER_CLIENT_SECRET
+        const GOOGLE_MAILER_REFRESH_TOKEN = process.env.GOOGLE_MAILER_REFRESH_TOKEN
+        const ADMIN_EMAIL_ADDRESS = process.env.ADMIN_EMAIL_ADDRESS
+
+        const myOAuth2Client = new OAuth2Client(
+            GOOGLE_MAILER_CLIENT_ID,
+            GOOGLE_MAILER_CLIENT_SECRET
+          )
+          myOAuth2Client.setCredentials({
+            refresh_token: GOOGLE_MAILER_REFRESH_TOKEN
+          })
         try {
-            const transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST,
-                port: process.env.SMTP_PORT,
+            const myAccessTokenObject = await myOAuth2Client.getAccessToken()
+            // Access Token sẽ nằm trong property 'token' trong Object mà chúng ta vừa get được ở trên
+            const myAccessToken = myAccessTokenObject?.token
+            const transport = nodemailer.createTransport({
+                service: 'gmail',
                 auth: {
-                    user: 'willis.nader43@ethereal.email',
-                    pass: 'xcB2E9FBem5EtyXaSK',
-                },
-            });
+                    type: 'OAuth2',
+                    user: ADMIN_EMAIL_ADDRESS,
+                    clientId: GOOGLE_MAILER_CLIENT_ID,
+                    clientSecret: GOOGLE_MAILER_CLIENT_SECRET,
+                    refresh_token: GOOGLE_MAILER_REFRESH_TOKEN,
+                    accessToken: myAccessToken
+                }
+                })  
 
             const mailOptions = {
-                from: 'willis.nader43@ethereal.email',
                 to: email,
                 subject: 'Reset Password in proSkills.com',
                 html: `<p>You requested for reset password, kindly use this <a href="http://localhost:8000/resetpassword?token=${token}">link</a> to reset your password</p>`,
             };
             console.log('Mail Options:', mailOptions);
 
-            await transporter.sendMail(mailOptions);
+            await transport.sendMail(mailOptions);
              
         } catch (err) {
             console.error('Error sending email:', err); 

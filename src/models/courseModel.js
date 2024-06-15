@@ -2,10 +2,9 @@ const db=require('../public/db.js');
 
 const Course=
 {
-    create: async (course) => {
-        const { title, description, content } = course;
-        const query = 'INSERT INTO courses (title, description, content,thumbnail) VALUES (?, ?, ?,?)';
-        const values = [title, description, content,thumbnail];
+    create: async (title, description, publisher,thumbnail) => {
+        const query = 'INSERT INTO courses (title, description, publisher,thumbnail) VALUES (?, ?, ?,?)';
+        const values = [title, description, publisher,thumbnail];
         try {
             const result = await db.query(query, values);
             return result;
@@ -47,10 +46,10 @@ const Course=
             throw err;
         }
     },
-    update: async (id, course) => {
-        const { title, description, content } = course;
-        const query = 'UPDATE courses SET title = ?, description = ?, content = ? WHERE id = ?';
-        const values = [title, description, content, id];
+    update: async (id, title, description, publisher,thumbnail) => {
+        
+        const query = 'UPDATE courses SET title = ?, description = ?, publisher = ?,thumbnail=? WHERE id = ?';
+        const values = [title, description, publisher,thumbnail, id];
 
         try {
             const result = await db.query(query, values);

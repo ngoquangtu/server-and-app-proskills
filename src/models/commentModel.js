@@ -2,12 +2,12 @@ const db=require('../public/db');
 
 const Comment=
 {
-    delete:async(id) =>
+    delete:async(id,userId,courseId) =>
     {
         try
         {
-            const query='DELETE  from comments_video where id=?';
-            const rows=await db.query(query,[id]);
+            const query='DELETE  * from comments_course where id=? and userId=? and course_id=?';
+            const rows=await db.query(query,[id,userId,courseId]);
             return rows;
         }
         catch(err)
@@ -29,44 +29,5 @@ const Comment=
 
         }
     },
-    createCommentVideo:async(video_id,course_id,userId,comment)=>
-    {
-        try
-        {
-            const query='INSERT INTO comments_video (video_id,course_id, userId, comment_text) VALUES (?, ?, ?,?)';
-            const rows=await db.query(query,[video_id,course_id,userId,comment]);
-            return rows;
-        }
-        catch(err)
-        {
-            throw err;
-        }
-    },
-    getAllComment:async(id)=>
-    {
-        const query='SELECT comments_video.*, video.title AS video_title FROM comments_video LEFT JOIN video ON comments_video.video_id = video.id JOIN courses ON video.course_id = courses.id WHERE comments_video.course_id = ?';
-        try
-        {   
-            const rows=await db.query(query,[id]);
-            return rows;
-        }
-        catch(err)
-        {
-            throw err;
-        }
-    },
-    getAllCommentbyAdmin:async()=>
-    {
-        const query='SELECT * FROM comments_video';
-        try
-        {
-            const rows=await db.query(query);
-            return rows;
-        }
-        catch(err)
-        {
-            throw err;
-        }
-    }
 };
 module.exports=Comment;

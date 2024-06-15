@@ -2,12 +2,14 @@ const Comment = require('../models/commentModel');
 
 exports.delete = async (req, res) => {
     try {
-        const { commentId } = req.params;
-        const deleted = await Comment.delete(commentId);
+        const { commentId,courseId } = req.params;
+        const userId=req.user.userId;
+
+        const deleted = await Comment.delete(commentId,userId,courseId);
         if (deleted) {
-            res.status(200).json({ message: 'Comment deleted successfully' }); // 200 OK
+            res.status(200).json({ message: 'Comment deleted successfully' }); 
         } else {
-            res.status(404).json({ message: 'Comment not found' }); // 404 Not Found
+            res.status(404).json({ message: 'Comment not found' }); 
         }
     } catch (err) {
         console.error('Error deleting comment:', err);
@@ -27,33 +29,5 @@ exports.create = async (req, res) => {
         res.status(500).json({ message: 'Error creating comment', error: err.message }); 
     }
 };
-exports.createCommentVideo=async(req,res)=>
-{
-    try
-    {
-        const {content}=req.body;
-        const courseId=req.params.courseId;
-        const videoId=req.params.videoId;
-        const userId= req.user.userId;
-        const comment=await Comment.createCommentVideo(videoId,courseId,userId,content);
-        res.status(201).json(comment);
 
-    }
-    catch(err)
-    {
-        console.error('Error creating comment:', err);
-        res.status(500).json({ message: 'Error creating comment', error: err.message });
-    }
-};
-
-exports.getAllComment = async (req, res) => {
-    try {
-        const { courseId } = req.params;
-        const comments = await Comment.getAllComment(courseId);
-        res.status(200).json(comments); // 200 OK
-    } catch (err) {
-        console.error('Error getting all comments:', err);
-        res.status(500).json({ message: 'Error getting all comments by course', error: err.message }); 
-    }
-};
 
