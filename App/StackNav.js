@@ -21,6 +21,7 @@ import Info from './Mainpage/Info';
 import MyCourse from './Mainpage/MyCourse';
 import LoadingPage from './Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LOCALHOST, PORT} from '@env';
 
 const Stack = createStackNavigator();
 
@@ -33,10 +34,10 @@ export default function StackNav() {
       try {
         const userToken = await AsyncStorage.getItem('JWT');
         if (userToken) {
-          context.setLogin(true);
-          context.setLoginInfo(JSON.parse(await AsyncStorage.getItem('userInfo')));
-          setInitialRouteName('HomePage');
+          fetchData(userToken);
         } else {
+          await AsyncStorage.removeItem('userInfo');
+          await AsyncStorage.removeItem('JWT');
           setInitialRouteName('Onboarding');
         }
       } catch (error) {
@@ -48,6 +49,31 @@ export default function StackNav() {
 
     checkAsyncStorage();
   }, [])
+
+  const fetchData = async (token) => {
+    try {
+      const api = `http://${LOCALHOST}:${PORT}/api/users/getavatar`;
+      const response = await fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      if(response.status === 200){
+        context.setLogin(true);
+        context.setLoginInfo(JSON.parse(await AsyncStorage.getItem('userInfo')));
+        setInitialRouteName('HomePage');
+        return;
+      }
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error);
+    }
+    await AsyncStorage.removeItem('userInfo');
+    await AsyncStorage.removeItem('JWT');
+    setInitialRouteName('Onboarding');
+  }
 
   return (
     context.isLoading ? <LoadingPage/> :
