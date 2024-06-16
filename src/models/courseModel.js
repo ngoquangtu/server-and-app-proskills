@@ -59,8 +59,6 @@ const Course=
         }
     },
     delete: async (id) => {
-
-   
         const query2= 'DELETE FROM Comments_video WHERE course_id = ?';
         const query3='DELETE FROM Video WHERE course_id = ?';
         const query4='DELETE FROM Enrollments WHERE course_id = ?';
@@ -120,7 +118,7 @@ const Course=
     },
     getFiveTopCoursesbyEnrollments:async()=>
     {
-        const query='SELECT course_id,COUNT(userId) as enrollment_count FROM Enrollments GROUP BY course_id  ORDER BY enrollment_count DESC LIMIT 5';
+        const query='SELECT course_id,COUNT(userId) as enrollment_count FROM enrollments GROUP BY course_id  ORDER BY enrollment_count DESC LIMIT 5';
         const query1='SELECT  courses.*,COUNT(enrollments.userId) as subcribeNum FROM courses LEFT JOIN enrollments ON courses.id=enrollments.course_id  WHERE courses.id = ?' ;
         try
         {

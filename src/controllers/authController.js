@@ -39,8 +39,8 @@ exports.login = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: '5h' }
         );
-        res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-        res.status(200).json({type:Status.SUCCESS, token, userInfo }); // 200 OK
+        res.cookie('token', token, { httpOnly: true});
+        res.status(200).json({type:Status.SUCCESS, token, userInfo }); 
     } catch (err) {
         console.error('Error during authentication:', err);
         res.status(500).json({ message: 'Error during authentication', error: err.message }); 
