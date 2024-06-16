@@ -1,7 +1,7 @@
 const express = require('express');
 const  router=express.Router();
 const userController=require('../controllers/userController');
-const {  verifyToken,isAdmin } = require('../middleware/authJWT.js');
+const {  verifyToken } = require('../middleware/authJWT.js');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 router.get('/:id',userController.getUserInfor);

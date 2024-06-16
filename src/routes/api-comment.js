@@ -6,7 +6,7 @@ const { verifyToken } = require('../middleware/authJWT');
 
 router.post('/courses/:courseId/comments', verifyToken, commentController.create);
 
-router.delete('/courses/:courseId/comments/:commentId', commentController.delete);
+router.delete('/courses/:courseId/comments/:commentId', verifyToken,commentController.delete);
 
 
 
