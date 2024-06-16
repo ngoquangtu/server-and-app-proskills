@@ -1,33 +1,13 @@
-import { StyleSheet, SafeAreaView, ScrollView, Image, Text, View, StatusBar } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import { StyleSheet, SafeAreaView, ScrollView, Image, Text, View, StatusBar, TouchableOpacity } from 'react-native'
+import React, { useContext } from 'react'
 import { CustomButton2, CustomButton5, FloatingLoginButton } from '../../components/Button'
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../utils/Context';
 import { convertTimestamp } from '../../utils/Utility';
 
 const Info = ({navigation}) => {
-  const [image, setImage] = useState(null);
-  const [isLoading, setLoading] = useState(false);
   const context = useContext(AuthContext);
-
-  const pickImage = async () =>{
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      const base64 = await FileSystem.readAsStringAsync(result.uri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      setImage(base64);
-      console.log(base64);
-    }
-  }
-
+  
   const logoutRequest = async () => {
     await AsyncStorage.removeItem('JWT');
   };
@@ -35,19 +15,14 @@ const Info = ({navigation}) => {
   return (
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
-        {/* <CustomButton1 
-          title={"Upload"} 
-          onPress={ () => {
-            pickImage();
-          }}></CustomButton1> */}
-
         <Image source={require('../../assets/Rectangle.png')} style={styles.img}/>
 
       </ScrollView>
       {context.isLogin ? <></> : <FloatingLoginButton title={"Log in / Sign up"} navigation={navigation}/>}
       
       <View style={styles.infoView}>
-        <Image source={context.isLogin? {uri: context.loginInfo.avatar_url} : require('../../assets/default_avatar.png')} style={{borderRadius: 56, width: 110, height: 110}}/>
+          <Image source={context.isLogin? {uri: context.loginInfo.avatar_url} : require('../../assets/default_avatar.png')} style={styles.avatar}/>
+
         {context.isLogin ? 
         <View style={{width: '100%'}}>
           <Text style={styles.username}>{context.loginInfo.username}</Text>
@@ -68,7 +43,9 @@ const Info = ({navigation}) => {
           </Text>
           <CustomButton5 
             title={"Change Password"}
-            onPress={() => navigation.navigate('ForgotPass2')}/>
+            onPress={() => {
+              navigation.navigate('ForgotPass2', {currentEmail: context.loginInfo.email});
+              }}/>
           <CustomButton5 
             title={"My learning"}
             onPress={()=> navigation.navigate('MyCourse')}/>
@@ -132,5 +109,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#70747E',
     letterSpacing: 0.7,
+  },
+  avatar:{
+    borderRadius: 56,
+    width: 110, 
+    height: 110,
+    borderWidth: 4,
+    borderColor: '#12B7BD',
   }
 })

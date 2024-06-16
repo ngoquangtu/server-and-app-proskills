@@ -2,17 +2,20 @@ import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Rating } from 'react-native-ratings'
 
-const SearchResultItem = ({item, navigation}) => {
+const SearchResultItem = ({item, navigation, setKey}) => {
   return (
     <TouchableOpacity 
       style={styles.container}
-      onPress={() => navigation.navigate("CourseInfo", {courseId: item.id})}>
+      onPress={() => {
+        navigation.navigate("CourseInfo", {courseId: item.id})
+        setKey();
+      }}>
       <Image source={{uri: item.thumbnail}} style={styles.img}/>
       <View style={{width: '70%', height: '100%', marginTop: 10, marginLeft: 12}}>
         <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
         <Text style={styles.publisher}>{item.publisher}</Text>
         <View style={{flexDirection: 'row'}}>
-          <Text style={{width: '6%', color: '#70747E', fontSize: 13}}>{item.rating}</Text>
+          <Text style={{width: '7%', color: '#70747E', fontSize: 12}}>{item.rating}</Text>
           <Rating
             readonly={true}
             startingValue={item.rating}

@@ -1,20 +1,19 @@
-import { StyleSheet, Image, View, Text, TextInput, Modal } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
-import {LOCALHOST, PORT} from '@env';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import CourseTab from '../../components/CourseTab';
-import { Rating } from 'react-native-ratings';
-import { CustomButton0, CustomButton6, CustomButton4 } from '../../components/Button';
 import Header from './Header';
 import LoadingPage from '../Loading';
+import Comment from './Comment';
+import CourseTab from '../../components/CourseTab';
+import {LOCALHOST, PORT} from '@env';
+import { Rating } from 'react-native-ratings';
+import React, { useContext, useEffect, useState } from 'react'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet, Image, View, Text, TextInput, Modal } from 'react-native'
+import { CustomButton0, CustomButton6, CustomButton4, CustomButton1 } from '../../components/Button';
 import { AuthContext } from '../../utils/Context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Comment from './CommentAndRate';
-import { CustomButton2 } from '../../components/Button';
 
 const CourseInfo = ({route, navigation}) => {
   const context = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRated, setIsRated] = useState(false);
   const [commentList, setCommentList] = useState([]);
 
   const [commentMode, setCommentMode] = useState(false);
@@ -22,6 +21,7 @@ const CourseInfo = ({route, navigation}) => {
   
   const [rating, setRating] = useState(0);
   const [userComment, setUserComment] = useState("");
+  const [currentComment, setCurrentComment] = useState("");
 
   const [courseData, setCourseData] = useState({
     course:
@@ -51,7 +51,6 @@ const CourseInfo = ({route, navigation}) => {
         if(response.status === 200){
           const data = await response.json();
           setCourseData(data);
-          setIsLoading(false);
         }
 
         const api1 = await `http://${LOCALHOST}:${PORT}/api/courses/comment/${route.params.courseId}`;
@@ -65,16 +64,17 @@ const CourseInfo = ({route, navigation}) => {
         if(response1.status === 200){
           const data = await response1.json();
           setCommentList(data);
+          setIsLoading(false);
           return;
         }
 
       } catch (error) {
-        console.error('There was a problem with your fetch operation:', error);
+        navigation.navigate('Error');
       }
     }
 
     getCourseById();
-  }, [commentMode, ratingMode]);
+  }, [commentMode, ratingMode, context.deleteComment]);
 
   const addCourse = async () => {
     try {
@@ -89,7 +89,6 @@ const CourseInfo = ({route, navigation}) => {
         }),
       });
 
-      console.log(response.status)
       if(response.status === 200){
         return;
       }
@@ -111,12 +110,13 @@ const CourseInfo = ({route, navigation}) => {
         }),
       });
 
-      console.log(response.status)
-      if(response.status === 200){
-        setRating(0);
-        setRatingMode(false);
+      if(response.status !== 200){
+        setIsRated(true);
         return;
       }
+      setRating(0);
+      setRatingMode(false);
+      return;
     } catch (error) {
       console.error('There was a problem with your fetch operation:', error);
     }
@@ -136,8 +136,6 @@ const CourseInfo = ({route, navigation}) => {
       });
 
       if(response.status === 200){
-        const data = await response.json();
-        console.log(data);
         setUserComment("");
         setCommentMode(false);
         return;
@@ -175,16 +173,16 @@ const CourseInfo = ({route, navigation}) => {
             <Text style={{color: '#70747E'}}>{courseData.numberofVideo} Lesson{courseData.numberofVideo > 1 ? 's':''}</Text>
           </View>
         </View>
-        <CustomButton4 
+        {context.isLogin ? <CustomButton4 
           title={"Rate this course"} 
           style={{width: '100%'}}
-          onPress={() => setRatingMode(true)}/>
+          onPress={() => setRatingMode(true)}/> : <></>}
         <Modal
           animationType='slide'
           visible={ratingMode}
           transparent={true}>
           <View style={{justifyContent:'center', alignItems:'center', flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
-              <View style={{backgroundColor:'#fff', height: '30%', width: '80%'}}>
+              <View style={{backgroundColor:'#fff', height: '31%', width: '80%'}}>
                   <Text style={{backgroundColor: '#6B50C3', color:'#fff', textAlign:'center',fontSize: 20, fontWeight: '600', paddingVertical: 10,}}>
                       Give rating to the course</Text>
                   <Rating
@@ -192,13 +190,15 @@ const CourseInfo = ({route, navigation}) => {
                       style={{marginTop: 20,}}
                       imageSize={40}
                       onFinishRating={(value) => {
-                          setRating(prev => prev = value);
+                          setRating(value);
                       }}
                   />
+                  <Text style={{textAlign: 'center', marginTop: 5, color: '#f00', fontWeight:'700'}}>
+                    {isRated? "An user can only rate 1 time per course" : ""}</Text>
                   <CustomButton6 onPress={() => {
                       addRating();
                   }} 
-                  title={"Submit rating"} style={{marginTop: 25}}/>
+                  title={"Submit rating"} style={{marginTop: 5}}/>
                   <CustomButton6 onPress={() => {
                       setRatingMode(false);
                   }} 
@@ -213,28 +213,31 @@ const CourseInfo = ({route, navigation}) => {
         </Text>
         <CustomButton0 title={"Start now"} style={{alignSelf: 'center', height: 38, marginTop: 5}}
           onPress={() => {
-            addCourse();
-            navigation.navigate("WatchVideo", {course: courseData.course});
+            if(context.isLogin){
+              addCourse();
+              navigation.navigate("WatchVideo", {course: courseData.course});
+            }
+            else navigation.navigate("Onboarding");
           }}/>
           
         <Text style={{marginTop: 10, marginLeft: 17, fontSize: 16, fontWeight: 'bold'}}>Student comments</Text>
-        <CustomButton4
+        {context.isLogin ? <CustomButton4
           title={"Add comment and rate"} 
           style={{width: '60%', alignSelf:'center', height: 30, marginTop: 0, marginBottom: -10}}
           onPress={()=>{
             setCommentMode(true);
-          }}/>
+          }}/>: <></>}
           
-        {commentList.length !== 0 ? <Comment items={commentList}/> : <></>}
+        {commentList.length !== 0 ? <Comment items={commentList} changeCommentIdFunc={setCurrentComment}/> : <></>}
         <Modal
           animationType='slide'
           visible={commentMode}
           transparent={true}>
           <View style={{justifyContent:'center', alignItems:'center', flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
-              <View style={{backgroundColor:'#fff', height: 260, width: '80%'}}>
+              <View style={{backgroundColor:'#fff', height: 300, width: '96%'}}>
                   <Text style={{backgroundColor: '#6B50C3', color:'#fff', textAlign:'center',fontSize: 20, fontWeight: '600', paddingVertical: 10,}}>
                     Add a comment</Text>
-                  <TextInput style={{borderWidth: 2, textAlignVertical: 'top', padding: 8, margin: 2,}}
+                  <TextInput style={{textAlignVertical: 'top', padding: 8, margin: 2,}}
                     placeholder={"Add comment here..."}
                     onChangeText={(value) => {
                       setUserComment((comment) => comment = value)
@@ -245,11 +248,31 @@ const CourseInfo = ({route, navigation}) => {
                   <CustomButton6 onPress={() => {
                       addComment();
                   }}
-                  title={"Submit comment"} style={{marginTop: 7, height: '25%'}}/>
+                  title={"Submit comment"} style={{marginTop: 28, height: '25%'}}/>
                   <CustomButton6 onPress={() => {
                       setCommentMode(false);
                   }}
                   title={"Back"} style={{height: '25%'}}/>
+              </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType='slide'
+          visible={context.deleteComment}
+          transparent={true}>
+          <View style={{justifyContent:'center', alignItems:'center', flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+              <View style={{backgroundColor:'#fff', height: '28%', width: '80%'}}>
+                  <Text style={{backgroundColor: '#6B50C3', color:'#fff', textAlign:'center',fontSize: 20, fontWeight: '600', paddingVertical: 10,}}>
+                      Delete this comment? </Text>
+                  <CustomButton1 title={"Yes"} onPress={()=> {
+                    context.delComment(route.params.courseId, currentComment);
+                  }}
+                  style={{width: '100%'}}></CustomButton1>
+                  <CustomButton1 title={"No"} onPress={() => {
+                    context.setDeleteComment(false);
+                  }}
+                  style={{width: '100%'}}></CustomButton1>
               </View>
           </View>
         </Modal>

@@ -5,21 +5,22 @@ import { CustomButton0 } from '../../components/Button'
 import {LOCALHOST, PORT} from '@env'
 import { useState } from 'react'
 
-export default function ChangePasswordForm({navigation, route}) {
+export default function ChangePasswordForm({route, navigation}) {
 
   const [inputErrors, setInputErrors] = useState({
     password: '',
-    confirmPassword: '',
+    newPassword: '',
   })
 
   const [currentInputs, setInputs] = useState({
     password: '',
-    confirmPassword: '',
+    newPassword: '',
   })
 
   const changePasswordRequest = async (input) => {
     try {
-      const api = `http://${LOCALHOST}:${PORT}/api/auth/`;
+      console.log(input);
+      const api = `http://${LOCALHOST}:${PORT}/api/auth/changepassword`;
       const response = await fetch(api, {
         method: 'POST',
         headers: {
@@ -28,7 +29,7 @@ export default function ChangePasswordForm({navigation, route}) {
         body: JSON.stringify({
           email: route.params.currentEmail,
           password: input.password,
-          confirmPassword: input.confirmPassword,
+          newPassword: input.newPassword,
         }),
       });
       
@@ -58,7 +59,7 @@ export default function ChangePasswordForm({navigation, route}) {
       <Text style={styles.description2}>Enter new password </Text>
       <View style={styles.formField}>
         <CustomSecureTextInput 
-          placeHolder={"Enter new password"} 
+          placeHolder={"Enter old password"} 
           onChangeText={(value) => {
             setInputs({...currentInputs, password: value});
             if(value) {
@@ -72,25 +73,24 @@ export default function ChangePasswordForm({navigation, route}) {
           }
           warningText={inputErrors.password}/>
         <CustomSecureTextInput 
-          placeHolder={"Confirm password"} 
+          placeHolder={"Enter new password"} 
           onChangeText={(value) => {
-            setInputs({...currentInputs, confirmPassword: value});
+            setInputs({...currentInputs, newPassword: value});
             if(value) {
-              setInputErrors({...inputErrors, confirmPassword: ''});
+              setInputErrors({...inputErrors, newPassword: ''});
             }
           }}
           onBlur={()=>{
-              if(!currentInputs.confirmPassword) setInputErrors({...inputErrors, confirmPassword: 'This cannot be empty!'});
+              if(!currentInputs.newPassword) setInputErrors({...inputErrors, newPassword: 'This cannot be empty!'});
             }
           }
-          warningText={inputErrors.confirmPassword}/>
+          warningText={inputErrors.newPassword}/>
       </View>
       <CustomButton0 
         title={"Reset"}  
         style={styles.button}
         onPress={() => {
-          if(currentInputs.password && currentInputs.confirmPassword &&
-            currentInputs.password.length >= 8 && currentInputs.confirmPassword === currentInputs.password){
+          if( currentInputs.password.length >= 8 && currentInputs.password.length >= 8){
             changePasswordRequest(currentInputs);
             return;
           }
@@ -98,8 +98,7 @@ export default function ChangePasswordForm({navigation, route}) {
           const newInputErrors = {};
           !currentInputs.password ? newInputErrors.password = 'This cannot be empty!' : 
             (currentInputs.password.length < 8)? newInputErrors.password = 'Password must be at least 8 characters!' : {};
-          !currentInputs.confirmPassword ? newInputErrors.confirmPassword = 'This cannot be empty!' :
-            (currentInputs.password && currentInputs.confirmPassword !== currentInputs.password) ? newInputErrors.confirmPassword = 'Must match the password': {};
+          !currentInputs.newPassword ? newInputErrors.newPassword = 'This cannot be empty!' : {};
           setInputErrors(newInputErrors);
         }}/>
     </View>

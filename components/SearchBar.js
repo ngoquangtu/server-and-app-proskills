@@ -2,10 +2,10 @@ import { StyleSheet, TextInput, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-const SearchBar = ({onPress, onChangeText}) => {
+const SearchBar = ({onPress, onChangeText, reference}) => {
   return (
     <View style={styles.container}>
-      <TextInput placeholder='Search here' style={styles.input} onChangeText={onChangeText}/>
+      <TextInput placeholder='Search here' style={styles.input} onChangeText={onChangeText} ref={reference}/>
       <TouchableOpacity onPress={onPress}>
         <MaterialCommunityIcons name='magnify' width={28} height={28} style={styles.icon}/>
       </TouchableOpacity>

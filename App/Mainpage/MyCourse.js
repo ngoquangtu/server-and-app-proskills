@@ -32,7 +32,7 @@ const MyCourse = ({navigation}) => {
     };
     getMyCourseList();
 
-  }, [])
+  })
 
   return (
     <SafeAreaView style={{backgroundColor: '#ffffff', height: '100%', alignItems: 'center'}}>

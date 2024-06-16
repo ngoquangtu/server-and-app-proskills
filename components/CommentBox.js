@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import React, { useContext } from 'react'
 import { convertTimestamp } from '../utils/Utility'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { AuthContext } from '../utils/Context'
 
-const CommentBox = ({item}) => {
+const CommentBox = ({item, changeCommentIdFunc}) => {
+  const context = useContext(AuthContext);
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onLongPress={()=> {
+      context.setDeleteComment(true);
+      changeCommentIdFunc(item.id);
+      }} activeOpacity={item.owned? 0.5: 1}>
       <Image source={{uri: item.useravatar}} style={styles.img}/>
       <View style={{marginLeft: 20, marginTop: 15, width: '75%'}}>
         <Text style={{fontSize: 14, fontWeight: '600', letterSpacing: 1}} numberOfLines={1}>{item.username}</Text>
@@ -18,7 +23,7 @@ const CommentBox = ({item}) => {
         </Text>
       </View>
       <MaterialCommunityIcons/>
-    </View>
+    </TouchableOpacity>
   )
 }
 

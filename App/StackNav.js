@@ -7,9 +7,9 @@ import SignInPage from './SignIn';
 import SignUpForm from './SignUp/form';
 import SignUpPage from './SignUp/SignUp';
 import SignUpDonePage from './SignUp/SignUpDone';
-import ForgotPass from './ForgotPassword/ForgotPassword1';
-import ChangeSuccess from './ForgotPassword/ForgotPassword3';
-import ChangePasswordForm from './ForgotPassword/ForgotPassword2'
+import ForgotPass from './ChangePassword/ForgotPassword1';
+import ChangeSuccess from './ChangePassword/ForgotPassword3';
+import ChangePasswordForm from './ChangePassword/ForgotPassword2'
 import CourseInfo from './Courses/CourseInfo';
 import { AuthContext } from '../utils/Context';
 import WatchVideo from './Courses/WatchVideo';
@@ -19,15 +19,41 @@ import HelpAndSupport from './AppInfo/HelpAndSupport';
 import { StatusBar } from 'react-native';
 import Info from './Mainpage/Info';
 import MyCourse from './Mainpage/MyCourse';
+import LoadingPage from './Loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
 export default function StackNav() {
   const context = React.useContext(AuthContext);
+  const [initialRouteName, setInitialRouteName] = React.useState(null);
+
+  React.useEffect(()=>{
+    const checkAsyncStorage = async () => {
+      try {
+        const userToken = await AsyncStorage.getItem('JWT');
+        if (userToken) {
+          context.setLogin(true);
+          context.setLoginInfo(JSON.parse(await AsyncStorage.getItem('userInfo')));
+          setInitialRouteName('HomePage');
+        } else {
+          setInitialRouteName('Onboarding');
+        }
+      } catch (error) {
+        console.error('Error checking AsyncStorage:', error);
+      } finally {
+        context.setIsLoading(false);
+      }
+    };
+
+    checkAsyncStorage();
+  }, [])
+
   return (
+    context.isLoading ? <LoadingPage/> :
     <NavigationContainer>
       <StatusBar backgroundColor="#12B7BD"/>
-        <Stack.Navigator initialRouteName={context.checkLogin() ? "HomePage" : "Onboarding"}>
+        <Stack.Navigator initialRouteName={initialRouteName}>
             <Stack.Screen name="HomePage" component={MainPage} options={{headerShown:false}}/>
             <Stack.Screen name="Onboarding" component={OnboardingPage} options={{headerShown:false}} />
             <Stack.Screen name="SignIn" component={SignInPage} options={{headerShown:false}}/>

@@ -54,8 +54,8 @@ const CustomButton5 = ({title, style, onPress}) => {
 const CustomButton6 = ({title, style, onPress}) => {
     return (
         <TouchableOpacity onPress={onPress} 
-        style={[styles.buttonCenter, {paddingVertical: 15, borderColor:'#12B7BD', borderWidth: 2}, style]}>
-            <Text style={[styles.buttonColorGreen]}>{title}</Text>
+        style={[styles.buttonCenter, {paddingVertical: 15, backgroundColor:'#12B7BD',borderColor: '#fff', borderWidth: 2}, style]}>
+            <Text style={[styles.buttonColorWhite, {fontWeight: '700'}]}>{title}</Text>
         </TouchableOpacity>
     );
 };

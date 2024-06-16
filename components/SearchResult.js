@@ -2,7 +2,7 @@ import { Image, StyleSheet, ScrollView, View, Text } from 'react-native'
 import React from 'react'
 import SearchResultItem from './SearchResultItem'
 
-const SearchResult = ({items, navigation}) => {
+const SearchResult = ({items, navigation, setKeyFunction}) => {
   return (
     items.length ? 
     <ScrollView>
@@ -11,6 +11,7 @@ const SearchResult = ({items, navigation}) => {
           <SearchResultItem 
             item={item}
             navigation={navigation}
+            setKey={setKeyFunction}
           />
         </View>
       ))}

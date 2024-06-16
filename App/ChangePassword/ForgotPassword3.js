@@ -1,8 +1,10 @@
 import { StyleSheet, Image, View, Text} from 'react-native';
 import {CustomButton0, CustomButton1 } from '../../components/Button';
+import { useContext } from 'react';
+import { AuthContext } from '../../utils/Context';
 
 export default function ChangeSuccess({navigation}) {
-
+  const context = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Successfully changed!</Text>
@@ -10,9 +12,11 @@ export default function ChangeSuccess({navigation}) {
       <Image source={require('../../assets/checkEmail.png')} style={styles.image}/>
       
       <View style={styles.buttonField}>
+        {context.isLogin? <></> : 
         <CustomButton0 
           title="Log in"
           onPress={()=> {navigation.navigate('SignIn')}}/>
+        }
         <CustomButton1 title="I'll do it later"
           onPress={() => {navigation.navigate('HomePage')}}/>
       </View>

@@ -100,12 +100,12 @@ export default function SignInPage({navigation}) {
           }
           warningText={inputErrors.password}/>
       </View>
-      <CustomButton4 
+      {/* <CustomButton4 
         title={"Forgot password?"} 
         onPress={() => navigation.navigate('ForgotPass1')}
         textColor={'#3700B3'}
         style={styles.fpButton}
-      />
+      /> */}
       <CustomButton0 
         title={"Log in"} 
         style={styles.loginButton}

@@ -10,7 +10,6 @@ import {LOCALHOST, PORT} from '@env';
 import { AuthContext } from '../../utils/Context';
 
 const Home = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(true);
   const [topListData, setTopListData] = useState({
     mostPopularList: [],
     mostRatingList: [],
@@ -19,7 +18,7 @@ const Home = ({navigation}) => {
   const context = useContext(AuthContext);
 
   useEffect(() =>{
-    setIsLoading(true);
+    context.setIsLoading(true);
     let result = {};
     const getTopRatingList = async () => {
       try {
@@ -49,7 +48,7 @@ const Home = ({navigation}) => {
           result.mostPopularList = mostPopularList;
         }
 
-        const api2 = await `http://${LOCALHOST}:${PORT}/api/courses/mostenrollment`;
+        const api2 = await `http://${LOCALHOST}:${PORT}/api/courses/mostcomment`;
         const response2 = await fetch(api2, {
           method: 'POST',
           headers: {
@@ -62,19 +61,18 @@ const Home = ({navigation}) => {
           result.mostCommentList = mostCommentList;
         }
 
-        setTopListData(prev => prev = result);
-
+        setTopListData(result);
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       }
     }
 
     getTopRatingList();
-    setIsLoading(false);
-  }, []);
+    context.setIsLoading(false);
+  }, [topListData]);
 
   return (
-    isLoading? <LoadingPage></LoadingPage> :
+    context.isLoading? <LoadingPage></LoadingPage> :
     <SafeAreaView>
       <ScrollView style={[styles.scrollView, {backgroundColor: '#fff'}, context.isLogin ? {} : { marginBottom: 60}]}>
         <Image source={require('../../assets/homeBanner.png')} style={styles.image}/>
@@ -85,12 +83,12 @@ const Home = ({navigation}) => {
             making knowledge accessible to everyone without worrying about costs.</Text>
           <Text style={styles.title}>Popular Courses of <Text style={styles.textHighlight2}>Month</Text></Text>
           <TopList 
-            items={topListData.mostRatingList}
+            items={topListData.mostPopularList}
             navigation={navigation}/>
 
           <Text style={styles.title}>Top Rating Courses of <Text style={styles.textHighlight2}>Month</Text></Text>
           <TopList 
-            items={topListData.mostPopularList}
+            items={topListData.mostRatingList}
             navigation={navigation}/>
 
           <View style={styles.suggestionField}>
