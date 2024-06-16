@@ -4,11 +4,11 @@
 
     exports.verifyToken = (req, res, next) => {
         
-        const token = req.cookies.token;   
-        if(token===null)
-        {
-             token = req.headers['authorization'].split(' ')[1];
-        } 
+        let token = req.cookies.token;
+
+        if (!token && req.headers['authorization']) {
+            token = req.headers['authorization'].split(' ')[1];
+        }
         if(token)
         {
             jwt.verify(token, process.env.SECRET_KEY, (err,user) => {
