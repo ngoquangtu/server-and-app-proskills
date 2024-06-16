@@ -6,7 +6,7 @@ const Comment=
     {
         try
         {
-            const query='DELETE  * from comments_course where id=? and userId=? and course_id=?';
+            const query='DELETE FROM comments_course WHERE id=? AND userId=? AND course_id=?';
             const rows=await db.query(query,[id,userId,courseId]);
             return rows;
         }

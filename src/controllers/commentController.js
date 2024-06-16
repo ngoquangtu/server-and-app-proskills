@@ -3,7 +3,7 @@ const Comment = require('../models/commentModel');
 exports.delete = async (req, res) => {
     try {
         const { commentId,courseId } = req.params;
-        const userId=req.user.userId;
+        const userId=req.user?.userId;
 
         const deleted = await Comment.delete(commentId,userId,courseId);
         if (deleted) {
