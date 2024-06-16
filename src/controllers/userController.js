@@ -51,10 +51,9 @@ exports.uploadAvatar=async(req,res)=>
     {
 
         const userId = req.user?.userId; 
-        if (!req.file) {
-            return res.status(400).send('No file selected');
-          }
-          const result = await User.uploadAvatar(req.file, userId);
+        const avatar = req.file;
+
+          const result = await User.uploadAvatar(avatar, userId);
           if (!result) {
               return res.status(500).json({ message: 'Error uploading avatar' });
           }

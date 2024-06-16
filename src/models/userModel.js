@@ -2,7 +2,7 @@ const db = require('../public/db');
 const dbfirebase=require('../public/dbfirebase');
 const bcrypt = require('bcrypt');
 const nodemailer=require('nodemailer');
-const fs=require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 const { OAuth2Client } = require('google-auth-library');
 
@@ -149,7 +149,7 @@ const User = {
     {
         try{
             const filePath = path.join(__dirname, '../public/count.json');
-            const json = fs.readFileSync(filePath, 'utf-8');
+            const json = await fs.promises.readFile(filePath, 'utf-8');
             const stats = JSON.parse(json);
             stats.pageviews++;
             fs.writeFileSync(filePath, JSON.stringify(stats, null, 2), 'utf-8');
