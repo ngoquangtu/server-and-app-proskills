@@ -44,12 +44,11 @@ exports.login = async (req, res) => {
     } catch (err) {
         console.error('Error during authentication:', err);
         res.status(500).json({ message: 'Error during authentication', error: err.message }); 
-    }
+    }   
 };
 
 exports.logout = async (req, res) => {
     try {
-        // res.cookie('token', '', { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
         res.clearCookie('token');
         res.status(200).json({ message: 'Logged out successfully' }); // 200 OK
     } catch (err) {

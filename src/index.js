@@ -25,7 +25,6 @@ if (cluster.isMaster) {
   app.use(cors({
     origin: true,
     credentials: true,
-    optionsSuccessStatus: 200,
   }));
 
   app.use(bodyParser.urlencoded({ extended: true }));
