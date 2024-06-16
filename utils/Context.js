@@ -6,18 +6,21 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [loginInfo, setLoginInfo] = useState({})
     const [isLogin, setLogin] = useState(false);
+    const [token, setToken] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [deleteComment, setDeleteComment] = useState(false);
 
     const login = async (jwt, userInfo) => {
       setLogin(true);
       setLoginInfo(userInfo);
+      setToken(jwt);
       await AsyncStorage.setItem('JWT', jwt);
       await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
     };
 
     const logout = async () => {
       setLogin(false);
+      setToken("");
       await AsyncStorage.removeItem('JWT');
       await AsyncStorage.removeItem('userInfo');
     };
@@ -30,6 +33,7 @@ const AuthProvider = ({ children }) => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           userId: loginInfo.id,
@@ -38,7 +42,6 @@ const AuthProvider = ({ children }) => {
 
       if(response.status === 200){
         const data = await response.json();
-        console.log(data);
         setDeleteComment(false);
         return;
       }
@@ -49,7 +52,7 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLogin, setLogin, loginInfo, setLoginInfo, login, logout, isLoading, setIsLoading, delComment, deleteComment, setDeleteComment }}>
+    <AuthContext.Provider value={{ isLogin, setLogin, loginInfo, setLoginInfo, login, logout, isLoading, setIsLoading, delComment, deleteComment, setDeleteComment, token }}>
       {children}
     </AuthContext.Provider>
   );

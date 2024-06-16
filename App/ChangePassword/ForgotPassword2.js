@@ -3,10 +3,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { CustomSecureTextInput } from '../../components/TextInput'
 import { CustomButton0 } from '../../components/Button'
 import {LOCALHOST, PORT} from '@env'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { AuthContext } from '../../utils/Context'
 
 export default function ChangePasswordForm({route, navigation}) {
-
+  const context = useContext(AuthContext);
   const [inputErrors, setInputErrors] = useState({
     password: '',
     newPassword: '',
@@ -19,12 +20,12 @@ export default function ChangePasswordForm({route, navigation}) {
 
   const changePasswordRequest = async (input) => {
     try {
-      console.log(input);
       const api = `http://${LOCALHOST}:${PORT}/api/auth/changepassword`;
       const response = await fetch(api, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${context.token}`
         },
         body: JSON.stringify({
           email: route.params.currentEmail,

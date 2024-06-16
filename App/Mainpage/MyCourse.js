@@ -16,6 +16,7 @@ const MyCourse = ({navigation}) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${context.token}`
           },
         });
         

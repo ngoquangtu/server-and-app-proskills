@@ -1,11 +1,13 @@
 import { StyleSheet, Image, View, TouchableOpacity, Text, TextInput, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { CustomButton0 } from '../../components/Button'
 import FeedbackSent from './FeedbackSent'
 import {LOCALHOST, PORT} from '@env'
+import { AuthContext } from '../../utils/Context'
 
 const Contact = ({navigation}) => {
+  const context = useContext(AuthContext);
   const [feedback, setFeedback] = useState("");
   const [isSent, setIsSent] = useState(false);
 
@@ -17,6 +19,7 @@ const Contact = ({navigation}) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${context.token}`
         },
         body: JSON.stringify({
           feedback: feedback,

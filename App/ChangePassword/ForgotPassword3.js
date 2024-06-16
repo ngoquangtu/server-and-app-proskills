@@ -8,7 +8,7 @@ export default function ChangeSuccess({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Successfully changed!</Text>
-      <Text style={styles.description}>Your password has been successfully change! Please log into your account again</Text>
+      <Text style={styles.description}>Your password has been successfully change!</Text>
       <Image source={require('../../assets/checkEmail.png')} style={styles.image}/>
       
       <View style={styles.buttonField}>
@@ -17,7 +17,7 @@ export default function ChangeSuccess({navigation}) {
           title="Log in"
           onPress={()=> {navigation.navigate('SignIn')}}/>
         }
-        <CustomButton1 title="I'll do it later"
+        <CustomButton1 title="Back to home"
           onPress={() => {navigation.navigate('HomePage')}}/>
       </View>
     </View>

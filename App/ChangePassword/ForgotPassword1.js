@@ -3,11 +3,13 @@ import { useFonts } from 'expo-font'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { CustomTextInput } from '../../components/TextInput'
 import { CustomButton0 } from '../../components/Button'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {LOCALHOST, PORT} from '@env'
 import { validateEmail } from '../../utils/Utility'
+import { AuthContext } from '../../utils/Context'
 
 export default function ForgotPass({navigation}) {
+  const context = useContext(AuthContext);
   const [loaded] = useFonts({
     PlusJakartaSans: require('../../assets/fonts/Plus Jakarta Sans.ttf'),
     PlusJakartaSansMedium: require('../../assets/fonts/Plus Jakarta Sans Medium.ttf'),
@@ -28,6 +30,7 @@ export default function ForgotPass({navigation}) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${context.token}`
         },
         body: JSON.stringify({
           email: email,

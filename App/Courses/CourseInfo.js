@@ -45,6 +45,7 @@ const CourseInfo = ({route, navigation}) => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${context.token}`
           },
         });
 
@@ -58,6 +59,7 @@ const CourseInfo = ({route, navigation}) => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${context.token}`
           },
         });
 
@@ -83,6 +85,7 @@ const CourseInfo = ({route, navigation}) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${context.token}`
         },
         body: JSON.stringify({
           courseId: route.params.courseId,
@@ -104,6 +107,7 @@ const CourseInfo = ({route, navigation}) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${context.token}`
         },
         body: JSON.stringify({
           rating: rating,
@@ -112,6 +116,7 @@ const CourseInfo = ({route, navigation}) => {
 
       if(response.status !== 200){
         setIsRated(true);
+        setRatingMode(false);
         return;
       }
       setRating(0);
@@ -129,6 +134,7 @@ const CourseInfo = ({route, navigation}) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${context.token}`
         },
         body: JSON.stringify({
           content: userComment,

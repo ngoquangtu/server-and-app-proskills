@@ -1,15 +1,17 @@
 import { StyleSheet, View, Text, ScrollView } from 'react-native'
-import React, { useEffect, useState, createContext } from 'react'
+import React, { useEffect, useState, createContext, useContext } from 'react'
 import Header from './Header'
 import YoutubeIframe from 'react-native-youtube-iframe'
 import {LOCALHOST, PORT} from '@env';
 import LoadingPage from '../Loading';
 import CourseTab from '../../components/CourseTab';
 import VideoList from '../../components/VideoList';
+import { AuthContext } from '../../utils/Context';
 
 export const VideoContext = createContext();
 
 const WatchVideo = ({route, navigation}) => {
+  const context = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [currentVideo, setCurrentVideo] = useState(1);
   const [videoList, setVideoList] = useState([]);
@@ -23,6 +25,7 @@ const WatchVideo = ({route, navigation}) => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${context.token}`
           },
         });
 
