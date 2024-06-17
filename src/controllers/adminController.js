@@ -3,10 +3,10 @@ const Comment = require('../models/commentModel');
 const User = require('../models/userModel');
 
 exports.createCourse = async (req, res) => {
-    const { title, description, content } = req.body;
+    const { title, description, publisher ,thumbnail} = req.body;
 
     try {
-        const newCourse = await Course.create({ title, description, content, thumbnail: req.file.path });
+        const newCourse = await Course.create( title, description, publisher ,thumbnail);
         res.status(201).json({ message: 'Course created successfully', course: newCourse });
     } catch (err) {
         console.error('Error creating course:', err);
@@ -43,8 +43,9 @@ exports.deleteComment = async (req, res) => {
 };
 exports.getAllComment= async(req,res)=>
 {
+    const {courseId}=req.body;
     try {
-        const comment = await Comment.getAllCommentbyAdmin();
+        const comment = await Course.getAllCommentbyAdmin(courseId);
         res.status(200).json(comment);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching comment', error: err.message });
@@ -74,19 +75,16 @@ exports.updateCourses=async (req,res)=>
         res.status(500).json({message:'Error update course',error:err.message});
     }
 }
-exports.deleteCourse=async(req,res)=>
-{
-    const courseId=req.body;
-    try
-    {
-        await Course.delete(courseId);
-        res.status(200).json('Delete courses successfully');
+exports.deleteCourse = async (req, res) => {
+    const courseId = req.params.id; 
+    try {
+        const result = await Course.delete(courseId); // Pass the courseId to delete function
+        res.status(200).json({ success: true, message: 'Course deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting course:', error);
+        res.status(500).json({ success: false, message: 'Error deleting course' });
     }
-    catch(err)
-    {
-        res.status(500).json({message:'Error delete course'});
-    }
-}
+};
 exports.stats=async(req,res)=>
 {
     try
@@ -109,5 +107,17 @@ exports.readFeedback=async(req,res)=>
     catch(err)
     {
         res.status(500).json({message:'Error read feedback'});
+    }
+}
+exports.getAllCourse=async(req,res)=>
+{
+    try
+    {
+        const courses=await Course.getAll();
+        res.status(200).json(courses);
+    }
+    catch(err)
+    {
+        res.status(500).json({message:'Error read courses'});
     }
 }

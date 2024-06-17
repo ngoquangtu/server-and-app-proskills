@@ -11,7 +11,7 @@ const rateLimit = require('express-rate-limit');
 
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 4; i++) {
     cluster.fork();
   }
   cluster.on('exit', (worker, code, signal) => {
@@ -41,7 +41,7 @@ if (cluster.isMaster) {
 
   const limiter = rateLimit({
     windowMs: 1 * 60 * 1000,
-    max: 10, // Giới hạn số lượng yêu cầu trong 1 phút
+    max: 10, 
     message: 'Too many requests from this IP, please try again later.'
   });
 
