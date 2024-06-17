@@ -63,6 +63,7 @@ const CourseInfo = ({route, navigation}) => {
           },
         });
 
+        console.log(response1.status);
         if(response1.status === 200){
           const data = await response1.json();
           setCommentList(data);
@@ -76,6 +77,7 @@ const CourseInfo = ({route, navigation}) => {
     }
 
     getCourseById();
+    setIsLoading(false);
   }, [commentMode, ratingMode, context.deleteComment]);
 
   const addCourse = async () => {
@@ -129,7 +131,7 @@ const CourseInfo = ({route, navigation}) => {
 
   const addComment = async () => {
     try {
-      const api = await `http://${LOCALHOST}:${PORT}/api/comments/courses/${route.params.courseId}/comments`;
+      const api = `http://${LOCALHOST}:${PORT}/api/comments/courses/${route.params.courseId}/comments`;
       const response = await fetch(api, {
         method: 'POST',
         headers: {
@@ -156,7 +158,7 @@ const CourseInfo = ({route, navigation}) => {
     isLoading? <LoadingPage></LoadingPage> : 
     <View style={styles.frameParent}>
       <Header navigation={navigation}/>
-        <Image source={{uri: courseData.course.thumbnail}} style={styles.thumbnail} />
+        <Image source={courseData.course.thumbnail ? { uri: courseData.course.thumbnail}: {}} style={styles.thumbnail} />
         <Text style={styles.publisher}>{courseData.course.publisher}</Text>
         <Text style={styles.title}>{courseData.course.title}</Text>
         <CourseTab type={0}/>
